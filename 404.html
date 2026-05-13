@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Teo Torres</title>
+  <script>
+    (function () {
+      var routes = {
+        '/projects.html': '/projects/',
+        '/services.html': '/services/',
+        '/opinions.html': '/opinions/',
+        '/about.html': '/about/',
+        '/contact.html': '/contact/',
+        '/index.html': '/',
+        '/projects': '/projects/',
+        '/services': '/services/',
+        '/opinions': '/opinions/',
+        '/about': '/about/',
+        '/contact': '/contact/'
+      };
+      var clean = routes[window.location.pathname];
+      if (clean) window.location.replace(clean);
+    })();
+  </script>
+</head>
+<body>
+  <h1>Page not found</h1>
+  <p><a href="/">Go home</a></p>
+</body>
+</html>
