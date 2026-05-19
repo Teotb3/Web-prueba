@@ -1,18 +1,19 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Teo Torres | About</title>
-  <link rel="canonical" href="https://teotorres.com/about/" />
-  <link rel="icon" href="../favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" href="../favicon-48x48.png" sizes="48x48" />
-  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
-  <meta name="theme-color" content="#050808" />
-  <meta property="og:image" content="https://teotorres.com/social-preview.png" />
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:image" content="https://teotorres.com/social-preview.png" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Teo Torres | About</title>
+<link href="https://teotorres.com/about/" rel="canonical"/>
+<link href="../favicon.ico" rel="icon" sizes="any"/>
+<link href="../favicon-48x48.png" rel="icon" sizes="48x48" type="image/png"/>
+<link href="../apple-touch-icon.png" rel="apple-touch-icon"/>
+<meta content="#050808" name="theme-color"/>
+<meta content="https://teotorres.com/social-preview.png" property="og:image"/>
+<meta content="summary_large_image" property="twitter:card"/>
+<meta content="https://teotorres.com/social-preview.png" property="twitter:image"/>
+<style>
     :root {
       --accent: #0aa7a2;
       --accent-dark: #05706d;
@@ -241,12 +242,105 @@
       top: 108px;
     }
 
-    .about-media img {
+    .about-carousel {
+      position: relative;
       width: 100%;
       aspect-ratio: 5 / 4;
+      overflow: hidden;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .about-carousel-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .about-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
-      filter: grayscale(100%);
+      opacity: 0;
+      transform: scale(1.025);
+      transition: opacity 780ms ease, transform 1200ms ease;
+      filter: none;
+    }
+
+    .about-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 1;
+    }
+
+    .about-carousel-btn {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+      width: 42px;
+      height: 42px;
+      transform: translateY(-50%);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.34);
+      color: #fff;
+      font-size: 2rem;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+
+    .about-carousel-btn:hover {
+      background: rgba(10,167,162,0.58);
+      border-color: rgba(255,255,255,0.48);
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    .about-carousel-prev { left: 1rem; }
+    .about-carousel-next { right: 1rem; }
+
+    .about-carousel-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 1rem;
+      z-index: 3;
+      display: flex;
+      gap: 0.45rem;
+      transform: translateX(-50%);
+      padding: 0.35rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .about-dot {
+      width: 8px;
+      height: 8px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.46);
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .about-dot.is-active {
+      width: 22px;
+      background: var(--accent);
+    }
+
+    @media (max-width: 820px) {
+      .about-carousel { aspect-ratio: 4 / 5; }
+      .about-carousel-btn { width: 38px; height: 38px; font-size: 1.7rem; }
+      .about-carousel-prev { left: 0.75rem; }
+      .about-carousel-next { right: 0.75rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .about-slide { transition: none; transform: none; }
     }
 
     .about-copy {
@@ -323,6 +417,24 @@
       position: absolute;
       left: 0;
       top: 0.72rem;
+    }
+
+
+    .about-list a {
+      color: #dffffd;
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-color: rgba(10,167,162,0.72);
+      text-underline-offset: 3px;
+    }
+
+    .about-list a:hover {
+      color: #ffffff;
+      text-decoration-color: currentColor;
+    }
+
+    body.light-mode .about-list a {
+      color: #164f4d !important;
     }
 
     .quote-box {
@@ -612,6 +724,14 @@
       font-size: .92rem;
     }
     .eu-badge span:first-child { font-size: 1.2rem; }
+    .eu-badge .eu-logo {
+      width: 36px;
+      height: 24px;
+      flex: 0 0 auto;
+      border-radius: 3px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.22);
+      overflow: hidden;
+    }
 
   
 /* Mobile fixed header applied site-wide */
@@ -1490,129 +1610,1205 @@ body:not(.light-mode) .socials .twitter-icon {
   border-color: rgba(255,255,255,0.45) !important;
 }
 
+
+
+/* ===== Software / tools section ===== */
+.about-copy a {
+  color: #dffffd;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+body.light-mode .about-copy a {
+  color: #164f4d !important;
+}
+.experience-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+.software-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  gap: 0.95rem;
+  margin-top: 1rem;
+}
+.software-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 78px;
+  padding: 0.85rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.09);
+  text-decoration: none !important;
+  overflow: visible;
+  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+}
+.software-card:hover,
+.software-card:focus-visible {
+  transform: translateY(-3px);
+  background: rgba(10,167,162,0.10);
+  border-color: rgba(10,167,162,0.38);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.22);
+  outline: none;
+  z-index: 20;
+}
+.software-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+}
+.software-logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: none !important;
+}
+
+.software-logo.software-logo-wide {
+  width: 68px;
+  height: 52px;
+  padding: 0.35rem;
+}
+.software-logo.software-logo-wide img {
+  width: 58px;
+  height: auto;
+  max-height: 34px;
+}
+.software-fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0.2rem;
+  color: #fff;
+  font-size: 0.58rem;
+  line-height: 1;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+.software-text {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.7rem);
+  width: min(260px, 82vw);
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  background: rgba(3,8,8,0.96);
+  border: 1px solid rgba(10,167,162,0.36);
+  box-shadow: 0 18px 38px rgba(0,0,0,0.32);
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px);
+  pointer-events: none;
+  transition: opacity 180ms ease, visibility 180ms ease, transform 180ms ease;
+}
+.software-text::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border-width: 8px 8px 0 8px;
+  border-style: solid;
+  border-color: rgba(3,8,8,0.96) transparent transparent transparent;
+}
+.software-card:hover .software-text,
+.software-card:focus-visible .software-text,
+.software-card:focus .software-text {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+.software-text strong {
+  display: block;
+  margin: 0 0 0.25rem;
+  color: #fff;
+  font-size: 0.98rem;
+}
+.software-text p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+body.light-mode .software-card {
+  background: rgba(248,250,251,0.78) !important;
+  border-color: rgba(37,44,47,0.10) !important;
+}
+body.light-mode .software-card:hover,
+body.light-mode .software-card:focus-visible {
+  background: #fff !important;
+  border-color: rgba(10,167,162,0.28) !important;
+  box-shadow: 0 16px 30px rgba(33,43,48,0.12) !important;
+}
+body.light-mode .software-logo {
+  background: rgba(255,255,255,0.86) !important;
+  border-color: rgba(37,44,47,0.10) !important;
+}
+body.light-mode .software-text {
+  background: rgba(248,250,251,0.98) !important;
+  border-color: rgba(10,167,162,0.28) !important;
+  box-shadow: 0 18px 38px rgba(33,43,48,0.18) !important;
+}
+body.light-mode .software-text::after {
+  border-color: rgba(248,250,251,0.98) transparent transparent transparent !important;
+}
+body.light-mode .software-text strong {
+  color: #252c2f !important;
+}
+body.light-mode .software-text p,
+body.light-mode .experience-note {
+  color: #5d6f72 !important;
+}
+body.light-mode .software-fallback {
+  color: #252c2f !important;
+}
+
+
+/* ===== Dark mode: keep software logos readable on light tiles ===== */
+body:not(.light-mode) .software-card {
+  background: rgba(255,255,255,0.055) !important;
+  border-color: rgba(255,255,255,0.11) !important;
+}
+body:not(.light-mode) .software-card:hover,
+body:not(.light-mode) .software-card:focus-visible {
+  background: rgba(10,167,162,0.12) !important;
+  border-color: rgba(10,167,162,0.42) !important;
+}
+body:not(.light-mode) .software-logo {
+  background: rgba(255,255,255,0.94) !important;
+  border-color: rgba(255,255,255,0.72) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.95) !important;
+}
+body:not(.light-mode) .software-logo img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+body:not(.light-mode) .software-fallback {
+  color: #111b1f !important;
+}
+
+
+.software-grid:not(.is-expanded) .software-card:nth-of-type(n+9) {
+  display: none;
+}
+.software-toggle {
+  margin: 1.1rem auto 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.72rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(10,167,162,0.36);
+  background: rgba(10,167,162,0.12);
+  color: #dffffd;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 220ms ease, background 220ms ease, border-color 220ms ease, color 220ms ease;
+}
+.software-toggle:hover,
+.software-toggle:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(10,167,162,0.20);
+  border-color: rgba(10,167,162,0.55);
+  outline: none;
+}
+.software-toggle-wrap {
+  display: flex;
+  justify-content: center;
+}
+body.light-mode .software-toggle {
+  background: rgba(10,167,162,0.10) !important;
+  border-color: rgba(10,167,162,0.28) !important;
+  color: #164f4d !important;
+}
+body.light-mode .software-toggle:hover,
+body.light-mode .software-toggle:focus-visible {
+  background: rgba(10,167,162,0.17) !important;
+  border-color: rgba(10,167,162,0.40) !important;
+}
+
+@media (max-width: 640px) {
+  .software-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .software-card {
+    min-height: 72px;
+    padding: 0.7rem;
+  }
+  .software-logo {
+    width: 52px;
+    height: 52px;
+  }
+  .software-logo img {
+    width: 38px;
+    height: 38px;
+  }
+  .software-text {
+    bottom: calc(100% + 0.55rem);
+  }
+}
+
+
+
+
+/* About carousel controls in light mode */
+body.light-mode .about-carousel-btn {
+  background: rgba(255,255,255,0.62) !important;
+  color: #252c2f !important;
+  border-color: rgba(37,44,47,0.18) !important;
+  box-shadow: 0 10px 22px rgba(33,43,48,0.12) !important;
+}
+body.light-mode .about-carousel-btn:hover {
+  background: rgba(255,255,255,0.86) !important;
+  border-color: rgba(10,167,162,0.38) !important;
+}
+body.light-mode .about-carousel-dots {
+  background: rgba(255,255,255,0.62) !important;
+  border-color: rgba(37,44,47,0.12) !important;
+}
+body.light-mode .about-dot {
+  background: rgba(37,44,47,0.34) !important;
+}
+body.light-mode .about-dot.is-active {
+  background: var(--accent) !important;
+}
+
 </style>
 </head>
 <body>
-    <header class="site-header">
-    <div class="container nav">
-      <a href="../" class="brand" aria-label="Go to home">
-        <span class="brand-mark"><img src="../logo-main.png" alt="Teo Torres logo" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></span>
-        <span>Teo Torres</span>
-      </a>
-
-      <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
-
-      <nav class="nav-links" id="navLinks" aria-label="Main">
-        <a href="../" data-nav="home">Home</a>
-        <a href="../projects/" data-nav="projects">Projects</a>
-        <a href="../services/" data-nav="services">Services</a>
-        <a href="../opinions/" data-nav="opinions">Opinions</a>
-        <a href="../about/" data-nav="about">About</a>
-        <a href="../contact/" data-nav="contact">Contact</a>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle day mode" aria-pressed="false">☀️</button>
-        <div class="nav-item nav-lang">
-          <button class="nav-trigger lang-button" id="langToggle" type="button" aria-haspopup="true" aria-expanded="false">EN <span class="caret">▼</span></button>
-          <div class="dropdown" id="langMenu" style="min-width:140px; left:auto; right:0;">
-            <button type="button" data-lang="en" aria-label="English">English</button>
-            <button type="button" data-lang="es" aria-label="Español">Español</button>
-          </div>
-        </div>
-      </nav>
+<header class="site-header">
+<div class="container nav">
+<a aria-label="Go to home" class="brand" href="../">
+<span class="brand-mark"><img alt="Teo Torres logo" src="../logo-main.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"/></span>
+<span>Teo Torres</span>
+</a>
+<button aria-controls="navLinks" aria-expanded="false" class="mobile-toggle" id="mobileToggle">Menu</button>
+<nav aria-label="Main" class="nav-links" id="navLinks">
+<a data-nav="home" href="../">Home</a>
+<a data-nav="projects" href="../projects/">Projects</a>
+<a data-nav="services" href="../services/">Services</a>
+<a data-nav="opinions" href="../opinions/">Opinions</a>
+<a data-nav="about" href="../about/">About</a>
+<a data-nav="contact" href="../contact/">Contact</a>
+<button aria-label="Toggle day mode" aria-pressed="false" class="theme-toggle" id="themeToggle" type="button">☀️</button>
+<div class="nav-item nav-lang">
+<button aria-expanded="false" aria-haspopup="true" class="nav-trigger lang-button" id="langToggle" type="button">EN <span class="caret">▼</span></button>
+<div class="dropdown" id="langMenu" style="min-width:140px; left:auto; right:0;">
+<button aria-label="English" data-lang="en" type="button">English</button>
+<button aria-label="Español" data-lang="es" type="button">Español</button>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class="about-page">
+<div class="container">
+<div class="about-intro page-intro">
+<h1>About Me</h1>
+<p>I compose, produce and design sound for film, games and audiovisual storytelling.</p>
+</div>
+</div>
+<div class="container about-grid">
+<aside class="about-media">
+  <div class="about-carousel" data-about-carousel aria-label="About me image carousel">
+    <div class="about-carousel-track">
+      <img class="about-slide is-active" src="../about-slide-1.jpg" alt="Teo Torres playing piano" loading="eager" decoding="async"/>
+<img class="about-slide" src="../about-slide-2.jpg" alt="Teo Torres playing piano in a public space" loading="lazy" decoding="async"/>
+<img class="about-slide" src="../about-slide-3.jpg" alt="Portrait of Teo Torres" loading="lazy" decoding="async"/>
+<img class="about-slide" src="../about-slide-4.jpg" alt="Teo Torres portrait outdoors" loading="lazy" decoding="async"/>
+<img class="about-slide" src="../about-slide-5.jpg" alt="Teo Torres performing at piano" loading="lazy" decoding="async"/>
     </div>
-  </header>
-
-  <main class="about-page">
-    <div class="container">
-      <div class="about-intro page-intro">
-        <h1>About Me</h1>
-        <p>Composer, producer and sound designer focused on film, games and audiovisual storytelling.</p>
-      </div>
-    </div>
-    <div class="container about-grid">
-      <aside class="about-media">
-        <img src="../about-piano-side.jpg" alt="Teo Torres playing piano" />
-      </aside>
-
-      <section class="about-copy">
-        <p>His background combines formal music studies, higher technical audio education and practical performance experience. Training at CIM Benimaclet in harmony and piano, together with higher technical sound studies at IES La Marxadella, created a strong bridge between musical creativity and professional production standards.</p>
-        <p>His approach is less about dumping music onto images and more about understanding what the project actually needs. Sometimes that means restraint, sometimes tension, sometimes melody, and sometimes admitting that silence is doing more work than half the cue.</p>
-        <p>He develops music oriented toward narrative, atmosphere and emotional impact, from immersive sound worlds to direct thematic writing. His work includes short films, videogames, podcasts, rescoring exercises, live performance and independent audiovisual collaborations.</p>
-
-        <div class="quote-box">Years of hands-on work across composition, production, live performance and scoring. Strong DAW fluency, real projects delivered, and no dependence on vague promises. Rare behavior online.</div>
-
-        <div class="about-blocks">
-          <article class="about-block">
-            <h2>What the work usually focuses on</h2>
-            <ul class="about-list">
-              <li>Original music for games, film and audiovisual media</li>
-              <li>Production, editing, mixing and project finishing</li>
-              <li>Atmosphere, pacing and emotional framing</li>
-              <li>Rescoring and reinterpretation of existing scenes</li>
-              <li>Hybrid writing between cinematic, ambient and melodic language</li>
-            </ul>
-          </article>
-
-          <article class="about-block">
-            <h2>Training and background</h2>
-            <ul class="about-list">
-              <li>Harmony and piano studies at CIM Benimaclet (Valencia)</li>
-              <li>Higher technical sound studies at IES La Marxadella</li>
-              <li>IES La Marxadella is a Center of Excellence endorsed by the European Union</li>
-              <li>Advanced workflow in Ableton Live, Pro Tools, Cubase, Logic and Kontakt</li>
-              <li>Training in music production, recording and post-production</li>
-              <li>Specific formation in composition and production for soundtracks</li>
-            </ul>
-            <div class="eu-badge" aria-label="European Union badge"><span>🇪🇺</span><span>Center of Excellence endorsed by the European Union</span></div>
-          </article>
-
-          <article class="about-block">
-            <h2>Why this portfolio exists</h2>
-            <p>This portfolio exists to show applied work, not abstract promises. Released projects, scoring demos, rescoring experiments, production pieces and live-oriented experience all live here because range matters more than fake branding.</p>
-          </article>
-        </div>
-      </section>
-    </div>
-  </main>
-
-    <footer class="site-footer">
-    <div class="container footer-row">
-      <p>© <span id="year"></span> Teo Torres. All rights reserved.</p>
-      <div class="socials">
-        <a class="social-discord" href="https://discord.gg/bzABDqrJ" target="_blank" rel="noreferrer" aria-label="Discord"><img src="https://cdn.simpleicons.org/discord/5865F2" alt="Discord" /></a>
-        <a class="social-instagram" href="https://www.instagram.com/teotb3" target="_blank" rel="noreferrer" aria-label="Instagram"><img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" /></a>
-        <a class="social-spotify" href="https://open.spotify.com/artist/4cF1Zn89X8y245hOPp7DZg?si=PmIArwcxSp2Cmy8XD5hZ0A" target="_blank" rel="noreferrer" aria-label="Spotify"><img src="https://cdn.simpleicons.org/spotify/1DB954" alt="Spotify" /></a>
-        <a class="social-whatsapp" href="https://wa.me/34717776623" target="_blank" rel="noreferrer" aria-label="WhatsApp"><img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp" /></a>
-        <a class="social-email" href="mailto:teotorres@gmail.com" target="_blank" rel="noreferrer" aria-label="Email"><img src="https://cdn.simpleicons.org/gmail/EA4335" alt="Email" /></a>
-        <a class="social-youtube" href="https://www.youtube.com/@Teotb3" target="_blank" rel="noreferrer" aria-label="YouTube"><img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube" /></a>
-                <a class="social-twitter" href="https://x.com/Teotb9" target="_blank" rel="noreferrer" aria-label="Twitter X">
-          <svg class="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M18.244 2H21.5l-7.11 8.13L22.75 22h-6.55l-5.13-6.7L5.2 22H1.94l7.6-8.69L1.5 2h6.72l4.64 6.14L18.244 2Zm-1.14 17.9h1.8L7.24 4H5.31l11.79 15.9Z"/>
-          </svg>
-        </a>
-<a class="social-linkedin" href="https://www.linkedin.com/in/teo-torres-7341b1201/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg"
-                         width="32"
-                         height="32"
-                         fill="currentColor"
-                         class="linkedin-logo"
-                         viewBox="0 0 16 16"
-                         aria-hidden="true">
-                      <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
-                    </svg></a>
-        <a class="social-bandcamp" href="https://teotorres.bandcamp.com" target="_blank" rel="noreferrer" aria-label="Bandcamp"><img src="https://cdn.simpleicons.org/bandcamp/629AA9" alt="Bandcamp" /></a>
-        <a class="social-soundcloud" href="https://soundcloud.com/teo-174590918" target="_blank" rel="noreferrer" aria-label="SoundCloud"><img src="https://cdn.simpleicons.org/soundcloud/FF5500" alt="SoundCloud" /></a>
-      </div>
-    </div>
-  </footer>
-
-  
+  </div>
+</aside>
+<section class="about-copy">
+<p>I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media.</p>
+<p>Music is a fundamental part of audiovisual work, but it is often pushed aside or left until the last moment. By working with me, you can think about music from the beginning of the project and reach a more complete result, with music that truly adapts to what you are looking for.</p>
+<p>Music can adapt to the narrative and pacing while adding atmosphere and impact to your project. If you want that, you need original music.</p>
+<div class="about-blocks">
+<article class="about-block">
+<h2>What my work focuses on</h2>
+<ul class="about-list">
+<li>Original music for games, film and audiovisual media</li>
+<li>Music adapted to your project from the first moment</li>
+<li>Use of professional tools for film and video game music</li>
+<li>Production, editing, mixing and project finishing</li>
+<li>Atmosphere, pacing and emotional framing</li>
+</ul>
+</article>
+<article class="about-block">
+<h2>Training and background</h2>
+<ul class="about-list">
+<li><a href="https://portal.edu.gva.es/iesmarxadella/" rel="noreferrer" target="_blank">IES La Marxadella</a> · Higher Degree in Sound for Audiovisuals and Shows</li>
+<li><a href="https://www.uv.es/uvweb/universidad/es/estudios-grado/oferta-grados/oferta-grados/grado-comunicacion-audiovisual-1285846094474/Titulacio.html?id=1286139270847" rel="noreferrer" target="_blank">Degree in Audiovisual Communication at the University of Valencia</a></li>
+<li><a href="https://www.cimbenimaclet.com/que-fem/que-pots-estudiar-al-cim-benimaclet/" rel="noreferrer" target="_blank">Jazz piano and modern harmony at CIM Benimaclet</a></li>
+<li><a href="https://www.patreon.com/cw/ampif" rel="noreferrer" target="_blank">Film Scoring Composition Course with Pier Francesco</a> · Academia de Música PIF</li>
+<li><a href="https://www.masterclass.com/classes/hans-zimmer-teaches-film-scoring" rel="noreferrer" target="_blank">Hans Zimmer Teaches Film Scoring</a> · MasterClass</li>
+<li><a href="https://www.masterclass.com/classes/danny-elfman-teaches-music-for-film" rel="noreferrer" target="_blank">Danny Elfman Teaches Music for Film</a> · MasterClass</li>
+<li><a href="https://mixwiththemasters.com/" rel="noreferrer" target="_blank">Mix with the Masters courses</a></li>
+</ul>
+<div aria-label="European Union co-funded centre badge" class="eu-badge"><svg class="eu-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" role="img" aria-label="European Union flag"><rect width="36" height="24" fill="#003399"/><g fill="#ffcc00"><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(18.00 5.40) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(21.30 6.28) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(23.72 8.70) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(24.60 12.00) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(23.72 15.30) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(21.30 17.72) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(18.00 18.60) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(14.70 17.72) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(12.28 15.30) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(11.40 12.00) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(12.28 8.70) scale(1.05)"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(14.70 6.28) scale(1.05)"/></g></svg><span>IES La Marxadella · Co-funded by the European Union</span></div>
+</article>
+<article class="about-block">
+<h2>Professional experience</h2>
+<p class="experience-note">Although composing and producing soundtracks is my passion, I also like eating, so I have worked with these other companies.</p>
+<ul class="about-list">
+<li>Keyboard player in <a href="https://grupotitanic.com/orquestas/la-orquesta-sideral/" rel="noreferrer" target="_blank">La Orquesta Sideral</a> / weddings and events</li>
+<li>Lighting technician and event setup technician at <a href="https://es.kompass.com/c/festalia-producciones-s-l/es990008601942/" rel="noreferrer" target="_blank">Festalia Producciones S.L.</a></li>
+<li>Wedding and event setup with <a href="https://audioprobe.es/" rel="noreferrer" target="_blank">Audioprobe</a> / <a href="https://maxieventos.es/" rel="noreferrer" target="_blank">MaxiEventos</a></li>
+</ul>
+</article>
+<article class="about-block">
+<h2>Software and tools</h2>
+<div class="software-grid">
+<a class="software-card" href="https://www.ableton.com/en/live/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Ableton Live logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.ableton.com/en/live/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/abletonlive/00FFAF"/><span class="software-fallback">Ableton</span></span>
+<span class="software-text"><strong>Ableton Live</strong><p>Sound design and live music, focused on creativity, fast idea development and loop-based workflows.</p></span>
+</a>
+<a class="software-card" href="https://www.avid.com/pro-tools" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Avid Pro Tools logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.avid.com/pro-tools&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/protools/7AC143"/><span class="software-fallback">Pro Tools</span></span>
+<span class="software-text"><strong>Pro Tools</strong><p>Industry-standard professional audio environment for recording, editing, post-production and session delivery.</p></span>
+</a>
+<a class="software-card" href="https://www.steinberg.net/cubase/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Cubase logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.steinberg.net/cubase/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/steinberg/009BDF"/><span class="software-fallback">Cubase</span></span>
+<span class="software-text"><strong>Cubase</strong><p>Film scoring and professional composition workflow for MIDI, orchestral mockups and cue development.</p></span>
+</a>
+<a class="software-card" href="https://musescore.org/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="MuseScore logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://musescore.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.google.com/s2/favicons?domain_url=https://musescore.org/&amp;sz=128"/><span class="software-fallback">MuseScore</span></span>
+<span class="software-text"><strong>MuseScore Studio</strong><p>Score creation, notation, arrangements and written musical material.</p></span>
+</a>
+<a class="software-card" href="https://www.spectrasonics.net/products/omnisphere/overview.php" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Omnisphere logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.spectrasonics.net/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.google.com/s2/favicons?domain_url=https://www.spectrasonics.net/products/omnisphere/overview.php&amp;sz=128"/><span class="software-fallback">Omni</span></span>
+<span class="software-text"><strong>Omnisphere</strong><p>Hybrid synthesis, cinematic textures, pads, atmospheres and sound design.</p></span>
+</a>
+<a class="software-card" href="https://www.arturia.com/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Arturia logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.arturia.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/arturia/111111"/><span class="software-fallback">Arturia</span></span>
+<span class="software-text"><strong>Arturia</strong><p>Synthesizers, keyboards, vintage emulations and creative sound design tools.</p></span>
+</a>
+<a class="software-card" href="https://www.native-instruments.com/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Native Instruments logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.native-instruments.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/nativeinstruments/111111"/><span class="software-fallback">NI</span></span>
+<span class="software-text"><strong>Native Instruments</strong><p>Instrument, sampler and sound library ecosystem for production, scoring and custom sound palettes.</p></span>
+</a>
+<a class="software-card" href="https://www.spitfireaudio.com/en-eu/products/spitfire-symphony-orchestra" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Spitfire Symphony Orchestra logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.spitfireaudio.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.google.com/s2/favicons?domain_url=https://www.spitfireaudio.com/en-eu/products/spitfire-symphony-orchestra&amp;sz=128"/><span class="software-fallback">Spitfire</span></span>
+<span class="software-text"><strong>Spitfire Symphony Orchestra</strong><p>Orchestral mockups and cinematic scoring with professional symphonic libraries.</p></span>
+</a>
+<a class="software-card" href="https://www.roland.com/global/promos/about_roland_cloud/" rel="noreferrer" target="_blank">
+<span class="software-logo software-logo-wide"><img alt="Roland logo" data-fallback="https://static.roland.com/global/css/fonts/roland.svg" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://upload.wikimedia.org/wikipedia/commons/2/25/Roland_Corporation_logo.svg"/><span class="software-fallback">Roland</span></span>
+<span class="software-text"><strong>Roland Cloud</strong><p>Classic Roland instruments, synthesizers and electronic sound palettes.</p></span>
+</a>
+<a class="software-card" href="https://www.waves.com/subscriptions" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Waves Creative Access logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.waves.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.google.com/s2/favicons?domain_url=https://www.waves.com/subscriptions&amp;sz=128"/><span class="software-fallback">Waves</span></span>
+<span class="software-text"><strong>Waves Creative Access</strong><p>Mixing, mastering and production plugins for polishing and final delivery.</p></span>
+</a>
+<a class="software-card" href="https://www.soundtoys.com/" rel="noreferrer" target="_blank">
+<span class="software-logo software-logo-wide"><img alt="Soundtoys logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.soundtoys.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://logo.clearbit.com/soundtoys.com?size=128"/><span class="software-fallback">Soundtoys</span></span>
+<span class="software-text"><strong>Soundtoys</strong><p>Creative audio effects plugins with analog character, movement, colour and texture.</p></span>
+</a>
+<a class="software-card" href="https://valhalladsp.com/" rel="noreferrer" target="_blank">
+<span class="software-logo software-logo-wide"><img alt="Valhalla DSP logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://valhalladsp.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://logo.clearbit.com/valhalladsp.com?size=128"/><span class="software-fallback">Valhalla</span></span>
+<span class="software-text"><strong>Valhalla DSP</strong><p>Reverb, delay and modulation plugins for space, depth and atmospheric sound design.</p></span>
+</a>
+<a class="software-card" href="https://splice.com/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Splice logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://splice.com/sounds&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.google.com/s2/favicons?domain_url=https://splice.com/&amp;sz=128"/><span class="software-fallback">Splice</span></span>
+<span class="software-text"><strong>Splice</strong><p>Royalty-free samples, loops, one-shots and creative starting points.</p></span>
+</a>
+<a class="software-card" href="https://www.adobe.com/products/premiere.html" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="Adobe Premiere Pro logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.adobe.com/products/premiere.html&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/adobepremierepro/9999FF"/><span class="software-fallback">Premiere</span></span>
+<span class="software-text"><strong>Adobe Premiere Pro</strong><p>Advanced professional video editing knowledge focused on audiovisual projects.</p></span>
+</a>
+<a class="software-card" href="https://www.afmg.eu/en/ease-focus" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="EASE Focus logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.afmg.eu/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.google.com/s2/favicons?domain_url=https://www.afmg.eu/en/ease-focus&amp;sz=128"/><span class="software-fallback">EASE</span></span>
+<span class="software-text"><strong>EASE Focus</strong><p>EASE sound-system prediction and acoustic simulation for line arrays, loudspeaker coverage and live-event planning.</p></span>
+</a>
+<a class="software-card" href="https://www.plugin-alliance.com/" rel="noreferrer" target="_blank">
+<span class="software-logo software-logo-wide"><img alt="Plugin Alliance logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.plugin-alliance.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/pluginalliance/111111"/><span class="software-fallback">PA</span></span>
+<span class="software-text"><strong>Plugin Alliance</strong><p>Mixing, mastering and creative plugin ecosystem for production and final polish.</p></span>
+</a><a class="software-card" href="https://www.izotope.com/" rel="noreferrer" target="_blank">
+<span class="software-logo software-logo-wide"><img alt="iZotope logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.izotope.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/izotope/111111"/><span class="software-fallback">iZotope</span></span>
+<span class="software-text"><strong>iZotope</strong><p>Audio repair, mixing, mastering and restoration tools for professional post-production and music finishing.</p></span>
+</a><a class="software-card" href="https://www.reaper.fm/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="REAPER logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.reaper.fm/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/reaper/111111"/><span class="software-fallback">REAPER</span></span>
+<span class="software-text"><strong>REAPER</strong><p>Flexible DAW for multitrack recording, editing, MIDI, mixing and efficient technical workflows.</p></span>
+</a><a class="software-card" href="https://www.image-line.com/fl-studio/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="FL Studio logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.image-line.com/fl-studio/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/flstudio/FF7200"/><span class="software-fallback">FL</span></span>
+<span class="software-text"><strong>FL Studio</strong><p>Pattern-based music production, beat creation, sequencing and fast arrangement sketches.</p></span>
+</a><a class="software-card" href="https://www.resolume.com/" rel="noreferrer" target="_blank">
+<span class="software-logo software-logo-wide"><img alt="Resolume logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://www.resolume.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://www.resolume.com/images/press/Logos/Resolume-Logo_black.svg"/><span class="software-fallback">Resolume</span></span>
+<span class="software-text"><strong>Resolume</strong><p>Live visuals, VJ work, media-server workflows and audiovisual performance control.</p></span>
+</a><a class="software-card" href="https://obsproject.com/" rel="noreferrer" target="_blank">
+<span class="software-logo"><img alt="OBS Studio logo" data-fallback="https://www.google.com/s2/favicons?domain_url=https://obsproject.com/&amp;sz=128" loading="lazy" onerror="if (this.dataset.fallback &amp;&amp; this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; this.dataset.fallback = ''; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }" src="https://cdn.simpleicons.org/obsstudio/111111"/><span class="software-fallback">OBS</span></span>
+<span class="software-text"><strong>OBS Studio</strong><p>Video recording, screen capture and live-streaming setup for audiovisual workflows.</p></span>
+</a></div>
+<div class="software-toggle-wrap">
+<button aria-expanded="false" class="software-toggle" data-hide-en="Show less" data-hide-es="Ver menos" data-show-en="Show more" data-show-es="Ver más" id="softwareToggle" type="button">Show more</button>
+</div>
+</article>
+</div>
+</section>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container footer-row">
+<p>© <span id="year"></span> Teo Torres. All rights reserved.</p>
+<div class="socials">
+<a aria-label="Discord" class="social-discord" href="https://discord.gg/bzABDqrJ" rel="noreferrer" target="_blank"><img alt="Discord" src="https://cdn.simpleicons.org/discord/5865F2"/></a>
+<a aria-label="Instagram" class="social-instagram" href="https://www.instagram.com/teotb3" rel="noreferrer" target="_blank"><img alt="Instagram" src="https://cdn.simpleicons.org/instagram/E4405F"/></a>
+<a aria-label="Spotify" class="social-spotify" href="https://open.spotify.com/artist/4cF1Zn89X8y245hOPp7DZg?si=PmIArwcxSp2Cmy8XD5hZ0A" rel="noreferrer" target="_blank"><img alt="Spotify" src="https://cdn.simpleicons.org/spotify/1DB954"/></a>
+<a aria-label="WhatsApp" class="social-whatsapp" href="https://wa.me/34717776623" rel="noreferrer" target="_blank"><img alt="WhatsApp" src="https://cdn.simpleicons.org/whatsapp/25D366"/></a>
+<a aria-label="Email" class="social-email" href="mailto:teotorres@gmail.com" rel="noreferrer" target="_blank"><img alt="Email" src="https://cdn.simpleicons.org/gmail/EA4335"/></a>
+<a aria-label="YouTube" class="social-youtube" href="https://www.youtube.com/@Teotb3" rel="noreferrer" target="_blank"><img alt="YouTube" src="https://cdn.simpleicons.org/youtube/FF0000"/></a>
+<a aria-label="Twitter X" class="social-twitter" href="https://x.com/Teotb9" rel="noreferrer" target="_blank">
+<svg aria-hidden="true" class="twitter-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.244 2H21.5l-7.11 8.13L22.75 22h-6.55l-5.13-6.7L5.2 22H1.94l7.6-8.69L1.5 2h6.72l4.64 6.14L18.244 2Zm-1.14 17.9h1.8L7.24 4H5.31l11.79 15.9Z" fill="currentColor"></path>
+</svg>
+</a>
+<a aria-label="LinkedIn" class="social-linkedin" href="https://www.linkedin.com/in/teo-torres-7341b1201/" rel="noreferrer" target="_blank"><svg aria-hidden="true" class="linkedin-logo" fill="currentColor" height="32" viewbox="0 0 16 16" width="32" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>
+</svg></a>
+<a aria-label="Bandcamp" class="social-bandcamp" href="https://teotorres.bandcamp.com" rel="noreferrer" target="_blank"><img alt="Bandcamp" src="https://cdn.simpleicons.org/bandcamp/629AA9"/></a>
+<a aria-label="SoundCloud" class="social-soundcloud" href="https://soundcloud.com/teo-174590918" rel="noreferrer" target="_blank"><img alt="SoundCloud" src="https://cdn.simpleicons.org/soundcloud/FF5500"/></a>
+</div>
+</div>
+</footer>
 <script>
 (() => {
-  const TEXT_TRANSLATIONS = {"Composer, producer and sound designer focused on film, games and audiovisual storytelling.": {"en": "Composer, producer and sound designer focused on film, games and audiovisual storytelling.", "es": "Compositor, productor y diseñador sonoro centrado en cine, videojuegos y narrativa audiovisual."}, "Home": {"en": "Home", "es": "Inicio"}, "Projects": {"en": "Projects", "es": "Proyectos"}, "Services": {"en": "Services", "es": "Servicios"}, "Opinions": {"en": "Opinions", "es": "Opiniones"}, "About": {"en": "About", "es": "Sobre mí"}, "Contact": {"en": "Contact", "es": "Contacto"}, "Menu": {"en": "Menu", "es": "Menú"}, "Teo Torres. All rights reserved.": {"en": "Teo Torres. All rights reserved.", "es": "Teo Torres. Todos los derechos reservados."}, "Bring your music to life": {"en": "Bring your music to life", "es": "Da vida a tu música"}, "Let's work together": {"en": "Let's work together", "es": "Trabajemos juntos"}, "Queen's Gambit": {"en": "Queen's Gambit", "es": "Queen's Gambit"}, "Rescore inspired by The Queen's Gambit. Focused on elegance, suspense and strategic dramatic movement.": {"en": "Rescore inspired by The Queen's Gambit. Focused on elegance, suspense and strategic dramatic movement.", "es": "Rescore inspirado en The Queen's Gambit, centrado en la elegancia, el suspense y el movimiento dramático estratégico."}, "Fractured": {"en": "Fractured", "es": "Fractured"}, "Rescoring of a Nuendo demo scene created for academic training. Focused on cinematic pacing, atmosphere and dramatic reinforcement.": {"en": "Rescoring of a Nuendo demo scene created for academic training. Focused on cinematic pacing, atmosphere and dramatic reinforcement.", "es": "Rescoring de una escena demo de Nuendo realizado para clase, centrado en ritmo cinematográfico, atmósfera y refuerzo dramático."}, "TetherGeist Music Scoring Contest": {"en": "TetherGeist Music Scoring Contest", "es": "TetherGeist Music Scoring Contest"}, "Nominated entry at the IndieGame Contest, 2nd worldwide edition. Hybrid scoring with tension design, impact accents and modern trailer energy.": {"en": "Nominated entry at the IndieGame Contest, 2nd worldwide edition. Hybrid scoring with tension design, impact accents and modern trailer energy.", "es": "Demo nominada en la segunda edición mundial del IndieGame Contest. Música híbrida con diseño de tensión, acentos de impacto y energía moderna de tráiler."}, "Eagle Brothers": {"en": "Eagle Brothers", "es": "Eagle Brothers"}, "Pilot episode of a mini-series inspired by Regular Show, created by students from the University of Valencia.": {"en": "Pilot episode of a mini-series inspired by Regular Show, created by students from the University of Valencia.", "es": "Piloto de una miniserie inspirada en Historias corrientes, creada por alumnos de la Universidad de Valencia."}, "Latest release": {"en": "Latest release", "es": "Último lanzamiento"}, "The Visitor Effect": {"en": "The Visitor Effect", "es": "The Visitor Effect"}, "You wake up as R3D, an alien robot trapped in a strange simulation. You do not know who controls you or why, but something does not add up. Every action can bring you closer to the truth or bury you deeper in the lie. How far are you willing to go to find the way out?": {"en": "You wake up as R3D, an alien robot trapped in a strange simulation. You do not know who controls you or why, but something does not add up. Every action can bring you closer to the truth or bury you deeper in the lie. How far are you willing to go to find the way out?", "es": "Despiertas como R3D, un robot alienígena prisionero en una simulación extraña. No sabes quién te controla ni por qué, pero algo no encaja. Cada acción puede acercarte a la verdad o sumirte más en la mentira. ¿Hasta dónde estás dispuesto a llegar para encontrar la salida?"}, "Available on Steam, Nintendo Switch, Xbox, PlayStation and Google Play, with music and audiovisual work connected to a real released project.": {"en": "Available on Steam, Nintendo Switch, Xbox, PlayStation and Google Play, with music and audiovisual work connected to a real released project.", "es": "Disponible en Steam, Nintendo Switch, Xbox, PlayStation y Google Play, con trabajo musical y audiovisual vinculado a un proyecto publicado real."}, "Watch trailer": {"en": "Watch trailer", "es": "Ver tráiler"}, "View release": {"en": "View release", "es": "Ver lanzamiento"}, "I am": {"en": "I am", "es": "Soy"}, "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales. Desarrollo música orientada a narrativa, atmósfera e impacto emocional, desde paisajes sonoros inmersivos hasta piezas temáticas más directas y memorables. He trabajado en proyectos independientes como cortometrajes, videojuegos, podcasts y rescores cinematográficos. Me he formado en sonido para audiovisuales en IES La Marxadella y en composición para bandas sonoras con profesorado vinculado a Berklee, además de estudios de piano con Ricardo Belda. Busco aportar identidad sonora real a cada proyecto, no solo música de fondo.": {"en": "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media. I create music shaped around narrative, atmosphere and emotional impact, from immersive sound worlds to more direct and memorable thematic writing. I have worked on independent projects including short films, video games, podcasts and film rescoring. My training includes audiovisual sound studies at IES La Marxadella, soundtrack composition with teachers linked to Berklee, and piano studies with Ricardo Belda. My goal is to give each project a real sonic identity, not just background music.", "es": "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales. Desarrollo música orientada a narrativa, atmósfera e impacto emocional, desde paisajes sonoros inmersivos hasta piezas temáticas más directas y memorables. He trabajado en proyectos independientes como cortometrajes, videojuegos, podcasts y rescores cinematográficos. Me he formado en sonido para audiovisuales en IES La Marxadella y en composición para bandas sonoras con profesorado vinculado a Berklee, además de estudios de piano con Ricardo Belda. Busco aportar identidad sonora real a cada proyecto, no solo música de fondo."}, "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media. I create music shaped around narrative, atmosphere and emotional impact, from immersive sound worlds to more direct and memorable thematic writing. I have worked on independent projects including short films, video games, podcasts and film rescoring. My training includes audiovisual sound studies at IES La Marxadella, soundtrack composition with teachers linked to Berklee, and piano studies with Ricardo Belda. My goal is to give each project a real sonic identity, not just background music.": {"en": "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media. I create music shaped around narrative, atmosphere and emotional impact, from immersive sound worlds to more direct and memorable thematic writing. I have worked on independent projects including short films, video games, podcasts and film rescoring. My training includes audiovisual sound studies at IES La Marxadella, soundtrack composition with teachers linked to Berklee, and piano studies with Ricardo Belda. My goal is to give each project a real sonic identity, not just background music.", "es": "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales. Desarrollo música orientada a narrativa, atmósfera e impacto emocional, desde paisajes sonoros inmersivos hasta piezas temáticas más directas y memorables. He trabajado en proyectos independientes como cortometrajes, videojuegos, podcasts y rescores cinematográficos. Me he formado en sonido para audiovisuales en IES La Marxadella y en composición para bandas sonoras con profesorado vinculado a Berklee, además de estudios de piano con Ricardo Belda. Busco aportar identidad sonora real a cada proyecto, no solo música de fondo."}, "Otros proyectos": {"en": "Other projects", "es": "Otros proyectos"}, "Trabajos musicales adicionales, colaboraciones y piezas vinculadas a proyectos culturales y audiovisuales.": {"en": "Additional musical works, collaborations and pieces linked to cultural and audiovisual projects.", "es": "Trabajos musicales adicionales, colaboraciones y piezas vinculadas a proyectos culturales y audiovisuales."}, "Fernando Zóbel - Homenaje a Patricio Montojo": {"en": "Fernando Zóbel - Tribute to Patricio Montojo", "es": "Fernando Zóbel - Homenaje a Patricio Montojo"}, "Composición inspirada en la obra y sensibilidad visual de Fernando Zóbel. Una pieza contemplativa y atmosférica que traslada paisaje, niebla y textura pictórica al lenguaje musical.": {"en": "Composition inspired by the work and visual sensitivity of Fernando Zóbel. A contemplative, atmospheric piece that translates landscape, mist and pictorial texture into musical language.", "es": "Composición inspirada en la obra y sensibilidad visual de Fernando Zóbel. Una pieza contemplativa y atmosférica que traslada paisaje, niebla y textura pictórica al lenguaje musical."}, "Desert Demo": {"en": "Desert Demo", "es": "Desert Demo"}, "Composición inspirada en paisajes desérticos y travesía. Sonoridad amplia, atmósfera cálida y sensación de movimiento entre arena, horizonte y misterio cinematográfico.": {"en": "Composition inspired by desert landscapes and travel. Expansive sound, warm atmosphere and a sense of movement through sand, horizon and cinematic mystery.", "es": "Composición inspirada en paisajes desérticos y travesía. Sonoridad amplia, atmósfera cálida y sensación de movimiento entre arena, horizonte y misterio cinematográfico."}, "Nintendo Demo": {"en": "Nintendo Demo", "es": "Nintendo Demo"}, "Demo creativa construida con sonidos originales inspirados en Nintendo. Enfoque lúdico, dinámico y melódico con estética retro-modernizada.": {"en": "Creative demo built with original sounds inspired by Nintendo. A playful, dynamic and melodic approach with a modernised retro aesthetic.", "es": "Demo creativa construida con sonidos originales inspirados en Nintendo. Enfoque lúdico, dinámico y melódico con estética retro-modernizada."}, "Shopping Trip Short Film": {"en": "Shopping Trip Short Film", "es": "Cortometraje Shopping Trip"}, "Shopping Trip": {"en": "Shopping Trip", "es": "Shopping Trip"}, "Short film rescore focused on irony, tension and everyday surrealism through original music.": {"en": "Short film rescore focused on irony, tension and everyday surrealism through original music.", "es": "Rescore de cortometraje centrado en ironía, tensión y surrealismo cotidiano mediante música original."}, "Proyecto basado en el cortometraje": {"en": "Project based on the short film", "es": "Proyecto basado en el cortometraje"}, "People who worked with me saying nice things. Rare and suspicious, but useful.": {"en": "People who worked with me saying nice things. Rare and suspicious, but useful.", "es": "Personas que han trabajado conmigo diciendo cosas buenas. Raro y sospechoso, pero útil."}, "People who worked with me saying nice things. Rare, suspicious and still useful.": {"en": "People who worked with me saying nice things. Rare, suspicious and still useful.", "es": "Personas que han trabajado conmigo diciendo cosas buenas. Raro, sospechoso y aun así útil."}, "Working with sound is not just technique. It is structure, emotion and intent. These are the main areas where I can help shape your project into something that sounds finished and worth hearing.": {"en": "Working with sound is not just technique. It is structure, emotion and intent. These are the main areas where I can help shape your project into something that sounds finished and worth hearing.", "es": "Trabajar con sonido no es solo técnica. Es estructura, emoción e intención. Estas son las principales áreas en las que puedo ayudarte a convertir tu proyecto en algo acabado y digno de ser escuchado."}, "Composición musical": {"en": "Music composition", "es": "Composición musical"}, "Diseño de sonido": {"en": "Sound design", "es": "Diseño de sonido"}, "Producción musical": {"en": "Music production", "es": "Producción musical"}, "Grabación profesional": {"en": "Professional recording", "es": "Grabación profesional"}, "Mezcla y mastering": {"en": "Mixing and mastering", "es": "Mezcla y mastering"}, "Arreglos orquestales": {"en": "Orchestral arrangements", "es": "Arreglos orquestales"}, "Música original concebida para reforzar identidad, emoción y narrativa en proyectos audiovisuales y videojuegos.": {"en": "Original music created to strengthen identity, emotion and narrative in audiovisual projects and video games.", "es": "Música original concebida para reforzar identidad, emoción y narrativa en proyectos audiovisuales y videojuegos."}, "Creación de ambientes, texturas, efectos y capas sonoras que aportan profundidad y carácter al proyecto.": {"en": "Creation of ambiences, textures, effects and sonic layers that add depth and character to the project.", "es": "Creación de ambientes, texturas, efectos y capas sonoras que aportan profundidad y carácter al proyecto."}, "Producción, edición y acabado profesional para que cada tema llegue sólido, competitivo y listo para publicar.": {"en": "Production, editing and professional finishing so each track lands solid, competitive and ready to release.", "es": "Producción, edición y acabado profesional para que cada tema llegue sólido, competitivo y listo para publicar."}, "Grabación cuidada de voces e instrumentos con enfoque técnico y artístico para obtener tomas utilizables y con carácter.": {"en": "Careful recording of voices and instruments with both technical and artistic focus to capture usable takes with character.", "es": "Grabación cuidada de voces e instrumentos con enfoque técnico y artístico para obtener tomas utilizables y con carácter."}, "Balance, pegada y claridad final para que el proyecto suene profesional en cualquier sistema.": {"en": "Balance, punch and final clarity so the project sounds professional on any playback system.", "es": "Balance, pegada y claridad final para que el proyecto suene profesional en cualquier sistema."}, "Adaptación y desarrollo de ideas musicales con enfoque orquestal para ampliar impacto, color y expresividad.": {"en": "Adaptation and development of musical ideas with an orchestral approach to expand impact, colour and expression.", "es": "Adaptación y desarrollo de ideas musicales con enfoque orquestal para ampliar impacto, color y expresividad."}, "Contact me": {"en": "Contact me", "es": "Contacto"}, "If you need original music, production help or a soundtrack that actually supports the project instead of filling silence, write to me.": {"en": "If you need original music, production help or a soundtrack that actually supports the project instead of filling silence, write to me.", "es": "Si necesitas música original, ayuda de producción o una banda sonora que realmente sostenga el proyecto en lugar de rellenar silencio, escríbeme."}, "Name": {"en": "Name", "es": "Nombre"}, "Email": {"en": "Email", "es": "Correo"}, "Project": {"en": "Project", "es": "Proyecto"}, "Message": {"en": "Message", "es": "Mensaje"}, "Send message": {"en": "Send message", "es": "Enviar mensaje"}, "Music built for the project, not for ego": {"en": "Music built for the project, not for ego", "es": "Música creada para el proyecto, no para el ego"}, "Composition, production and sound work for games, film, trailers, artists and audiovisual projects. Clear communication, flexible revisions and music shaped around what the piece actually needs.": {"en": "Composition, production and sound work for games, film, trailers, artists and audiovisual projects. Clear communication, flexible revisions and music shaped around what the piece actually needs.", "es": "Composición, producción y trabajo sonoro para videojuegos, cine, tráileres, artistas y proyectos audiovisuales. Comunicación clara, revisiones flexibles y música adaptada a lo que la pieza necesita."}, "Full score and production support": {"en": "Full score and production support", "es": "Banda sonora completa y apoyo de producción"}, "For projects that need more than a nice cue. This includes spotting, style definition, mockups, revisions, delivery planning and final production ready for the format you are releasing.": {"en": "For projects that need more than a nice cue. This includes spotting, style definition, mockups, revisions, delivery planning and final production ready for the format you are releasing.", "es": "Para proyectos que necesitan algo más que una pieza bonita. Incluye spotting, definición de estilo, maquetas, revisiones, planificación de entregas y producción final."}, "Original music for videogames, short films and audiovisual media": {"en": "Original music for videogames, short films and audiovisual media", "es": "Música original para videojuegos, cortometrajes y medios audiovisuales"}, "Thematic writing, ambience, tension building and hybrid scoring": {"en": "Thematic writing, ambience, tension building and hybrid scoring", "es": "Escritura temática, ambientes, construcción de tensión y composición híbrida"}, "Communication throughout the process instead of disappearing into a cave": {"en": "Communication throughout the process instead of disappearing into a cave", "es": "Comunicación durante todo el proceso"}, "Stems, mixes and export versions prepared for real use": {"en": "Stems, mixes and export versions prepared for real use", "es": "Stems, mezclas y versiones de exportación preparadas para uso real"}, "Game and film composition": {"en": "Game and film composition", "es": "Composición para videojuegos y cine"}, "Music designed to support narrative, mechanics, pacing and emotional tone, whether the project needs subtle atmosphere or a more direct melodic identity.": {"en": "Music designed to support narrative, mechanics, pacing and emotional tone, whether the project needs subtle atmosphere or a more direct melodic identity.", "es": "Música diseñada para apoyar narrativa, mecánicas, ritmo y tono emocional, tanto si el proyecto necesita atmósfera sutil como una identidad melódica más directa."}, "Main themes and character ideas": {"en": "Main themes and character ideas", "es": "Temas principales e ideas para personajes"}, "Loopable gameplay cues": {"en": "Loopable gameplay cues", "es": "Piezas en bucle para gameplay"}, "Cinematic and trailer style writing": {"en": "Cinematic and trailer style writing", "es": "Escritura cinematográfica y de tráiler"}, "Rescoring and scene-specific music": {"en": "Rescoring and scene-specific music", "es": "Rescoring y música específica para escenas"}, "Production and mixing": {"en": "Production and mixing", "es": "Producción y mezcla"}, "From raw session to polished track. Editing, arrangement support, balancing and finishing for music that needs structure and impact instead of another half-finished demo.": {"en": "From raw session to polished track. Editing, arrangement support, balancing and finishing for music that needs structure and impact instead of another half-finished demo.", "es": "De la sesión en bruto al tema acabado. Edición, apoyo de arreglos, balance y acabado para música que necesita estructura e impacto."}, "Track production and arrangement": {"en": "Track production and arrangement", "es": "Producción y arreglo de temas"}, "Session cleanup and editing": {"en": "Session cleanup and editing", "es": "Limpieza y edición de sesiones"}, "Mix preparation and delivery": {"en": "Mix preparation and delivery", "es": "Preparación y entrega de mezcla"}, "Creative feedback on the piece itself": {"en": "Creative feedback on the piece itself", "es": "Feedback creativo sobre la pieza"}, "Orchestral and hybrid writing": {"en": "Orchestral and hybrid writing", "es": "Escritura orquestal e híbrida"}, "For projects that need scale, motion and texture without sounding like a generic preset wall. Live feel where possible, detailed mockups where necessary.": {"en": "For projects that need scale, motion and texture without sounding like a generic preset wall. Live feel where possible, detailed mockups where necessary.", "es": "Para proyectos que necesitan escala, movimiento y textura sin sonar como una pared genérica de presets."}, "Orchestral mockups": {"en": "Orchestral mockups", "es": "Maquetas orquestales"}, "Hybrid cinematic textures": {"en": "Hybrid cinematic textures", "es": "Texturas cinematográficas híbridas"}, "Ambient and emotional piano writing": {"en": "Ambient and emotional piano writing", "es": "Escritura ambiental y emocional para piano"}, "Contemporary dramatic scoring": {"en": "Contemporary dramatic scoring", "es": "Composición dramática contemporánea"}, "Collaboration workflow": {"en": "Collaboration workflow", "es": "Flujo de colaboración"}, "The point is not to impose a signature at any cost. The point is to make the project sound right. That means references, tests, revisions and honest decisions when a cue needs to change.": {"en": "The point is not to impose a signature at any cost. The point is to make the project sound right. That means references, tests, revisions and honest decisions when a cue needs to change.", "es": "El objetivo no es imponer una firma a cualquier precio. El objetivo es que el proyecto suene como debe. Eso implica referencias, pruebas, revisiones y decisiones honestas."}, "Fast concept tests when needed": {"en": "Fast concept tests when needed", "es": "Pruebas rápidas de concepto"}, "Open revision process": {"en": "Open revision process", "es": "Proceso de revisión abierto"}, "Clear delivery planning": {"en": "Clear delivery planning", "es": "Planificación clara de entregas"}, "Adaptation to scope and deadlines": {"en": "Adaptation to scope and deadlines", "es": "Adaptación al alcance y plazos"}, "Need something specific that is not listed here? Most real projects are messy and slightly undefined at the start. The useful part is shaping the music around the brief, not pretending every commission fits inside a cute category.": {"en": "Need something specific that is not listed here? Most real projects are messy and slightly undefined at the start. The useful part is shaping the music around the brief, not pretending every commission fits inside a cute category.", "es": "¿Necesitas algo concreto que no aparece aquí? La mayoría de proyectos reales empiezan desordenados y algo indefinidos. Lo útil es construir la música alrededor del encargo."}, "Let’s talk about the project": {"en": "Let’s talk about the project", "es": "Hablemos del proyecto"}, "If you need original music, production help, rescoring or a soundtrack that actually supports the work instead of suffocating it, this is where the conversation starts.": {"en": "If you need original music, production help, rescoring or a soundtrack that actually supports the work instead of suffocating it, this is where the conversation starts.", "es": "Si necesitas música original, ayuda de producción, rescoring o una banda sonora que apoye la obra en lugar de asfixiarla, aquí empieza la conversación."}, "Direct contact": {"en": "Direct contact", "es": "Contacto directo"}, "Pick the channel that makes sense. Some people insist on emailing. Others apparently prefer Discord. Civilization remains uneven.": {"en": "Pick the channel that makes sense. Some people insist on emailing. Others apparently prefer Discord. Civilization remains uneven.", "es": "Elige el canal que tenga sentido. Algunas personas insisten en el correo. Otras prefieren Discord."}, "Best messages usually include the type of project, what stage it is in, rough timing, and what you actually need. Vague enthusiasm is charming but not operational.": {"en": "Best messages usually include the type of project, what stage it is in, rough timing, and what you actually need. Vague enthusiasm is charming but not operational.", "es": "Los mejores mensajes incluyen tipo de proyecto, fase, plazos aproximados y qué necesitas exactamente."}, "A real form layout, because copying an email address into a blank message like it’s 2006 is a strange ritual.": {"en": "A real form layout, because copying an email address into a blank message like it’s 2006 is a strange ritual.", "es": "Un formulario real, porque copiar un correo en un mensaje en blanco como si fuera 2006 es un ritual extraño."}, "Project type": {"en": "Project type", "es": "Tipo de proyecto"}, "Game": {"en": "Game", "es": "Videojuego"}, "Film / Short film": {"en": "Film / Short film", "es": "Cine / Cortometraje"}, "Rescoring": {"en": "Rescoring", "es": "Rescoring"}, "Production / Mixing": {"en": "Production / Mixing", "es": "Producción / Mezcla"}, "Other": {"en": "Other", "es": "Otro"}, "Open email": {"en": "Open email", "es": "Abrir correo"}, "This form is currently visual only in preview. Once the site is wired properly, it can connect to email, Formspark, Netlify Forms, Formspree, or whatever modern workaround humans are using this week.": {"en": "This form is currently visual only in preview. Once the site is wired properly, it can connect to email, Formspark, Netlify Forms, Formspree, or whatever modern workaround humans are using this week.", "es": "Este formulario ahora es solo visual en la previsualización. Cuando la web esté conectada, puede enlazarse con email, Formspark, Netlify Forms o Formspree."}, "People behind the projects": {"en": "People behind the projects", "es": "Personas detrás de los proyectos"}, "The same testimonials from the main page, but gathered here in one place so the menu item stops pretending and starts doing its job.": {"en": "The same testimonials from the main page, but gathered here in one place so the menu item stops pretending and starts doing its job.", "es": "Los mismos testimonios de la página principal, reunidos aquí para que el menú haga su trabajo."}, "Profesor de piano": {"en": "Piano teacher", "es": "Profesor de piano"}, "Profesor de Ableton y Music Scoring": {"en": "Ableton and Music Scoring teacher", "es": "Profesor de Ableton y Music Scoring"}, "Profesora de comunicación y expresión sonora": {"en": "Sound communication and expression teacher", "es": "Profesora de comunicación y expresión sonora"}, "Creador de The Visitor Effect": {"en": "Creator of The Visitor Effect", "es": "Creador de The Visitor Effect"}, "Creadora de contenido": {"en": "Content creator", "es": "Creadora de contenido"}, "Creador de Eagle Brothers": {"en": "Creator of Eagle Brothers", "es": "Creador de Eagle Brothers"}, "Gran sensibilidad musical y muy buena capacidad para convertir ideas en piezas reales y funcionales.": {"en": "Great musical sensitivity and a strong ability to turn ideas into real, functional pieces.", "es": "Gran sensibilidad musical y muy buena capacidad para convertir ideas en piezas reales y funcionales."}, "Buen criterio de producción, rapidez aprendiendo y una visión moderna aplicada a Ableton y music scoring.": {"en": "Good production judgement, fast learning and a modern vision applied to Ableton and music scoring.", "es": "Buen criterio de producción, rapidez aprendiendo y una visión moderna aplicada a Ableton y music scoring."}, "Destaca por creatividad, comunicación sonora y capacidad expresiva dentro de proyectos audiovisuales.": {"en": "Stands out for creativity, sound communication and expressive ability in audiovisual projects.", "es": "Destaca por creatividad, comunicación sonora y capacidad expresiva dentro de proyectos audiovisuales."}, "Proyecto con identidad clara, dirección artística sólida y ambición real dentro del desarrollo indie.": {"en": "A project with a clear identity, solid art direction and real ambition within indie development.", "es": "Proyecto con identidad clara, dirección artística sólida y ambición real dentro del desarrollo indie."}, "Creatividad visual con personalidad propia y una sensibilidad estética que conecta rápido con la audiencia.": {"en": "Visual creativity with its own personality and an aesthetic sensitivity that quickly connects with the audience.", "es": "Creatividad visual con personalidad propia y una sensibilidad estética que conecta rápido con la audiencia."}, "Ideas frescas, enfoque narrativo y capacidad para convertir humor y aventura en algo reconocible.": {"en": "Fresh ideas, narrative focus and the ability to turn humour and adventure into something recognisable.", "es": "Ideas frescas, enfoque narrativo y capacidad para convertir humor y aventura en algo reconocible."}, "Released work, rescoring exercises and featured audiovisual pieces presented in one place.": {"en": "Released work, rescoring exercises and featured audiovisual pieces presented in one place.", "es": "Trabajos publicados, ejercicios de rescoring y piezas audiovisuales destacadas reunidas en un solo lugar."}, "Narrative-driven indie game with published presence across major platforms.": {"en": "Narrative-driven indie game with published presence across major platforms.", "es": "Videojuego indie narrativo publicado en las principales plataformas."}, "Featured released game project and strongest commercial proof inside the portfolio.": {"en": "Featured released game project and strongest commercial proof inside the portfolio.", "es": "Proyecto de videojuego publicado y principal prueba comercial dentro del portfolio."}, "Academic scoring work with a stronger fantasy-RPG tone and immersive atmosphere design.": {"en": "Academic scoring work with a stronger fantasy-RPG tone and immersive atmosphere design.", "es": "Trabajo académico de composición con tono fantasy-RPG y atmósfera inmersiva."}, "Demo Queen Gambit": {"en": "Demo Queen Gambit", "es": "Demo Queen Gambit"}, "Rescore inspired by The Queen's Gambit. Elegance, tension and strategic pacing.": {"en": "Rescore inspired by The Queen's Gambit. Elegance, tension and strategic pacing.", "es": "Rescore inspirado en The Queen's Gambit. Elegancia, tensión y ritmo estratégico."}, "Rescoring exercise built around restraint, suspense and controlled dramatic movement.": {"en": "Rescoring exercise built around restraint, suspense and controlled dramatic movement.", "es": "Ejercicio de rescoring construido sobre contención, suspense y movimiento dramático controlado."}, "Contest entry with hybrid scoring, tension design and trailer energy.": {"en": "Contest entry with hybrid scoring, tension design and trailer energy.", "es": "Participación de concurso con composición híbrida, diseño de tensión y energía de tráiler."}, "Hybrid contest cue balancing impact, momentum and a more contemporary scoring language.": {"en": "Hybrid contest cue balancing impact, momentum and a more contemporary scoring language.", "es": "Pieza híbrida de concurso que equilibra impacto, impulso y un lenguaje más contemporáneo."}, "Adventure tone, melody and character-driven cue writing.": {"en": "Adventure tone, melody and character-driven cue writing.", "es": "Tono de aventura, melodía y escritura centrada en personajes."}, "Animated storytelling cue with rhythmic drive and a more playful dramatic profile.": {"en": "Animated storytelling cue with rhythmic drive and a more playful dramatic profile.", "es": "Pieza para narración animada con impulso rítmico y perfil más lúdico."}, "Short film rescore focused on irony, tension and everyday surrealism.": {"en": "Short film rescore focused on irony, tension and everyday surrealism.", "es": "Rescore de cortometraje centrado en ironía, tensión y surrealismo cotidiano."}, "Short film rescore where the soundtrack pushes daily realism into something darker and more cinematic.": {"en": "Short film rescore where the soundtrack pushes daily realism into something darker and more cinematic.", "es": "Rescore de cortometraje donde la banda sonora empuja el realismo cotidiano hacia algo más oscuro y cinematográfico."}, "Contemplative piece inspired by texture and landscape.": {"en": "Contemplative piece inspired by texture and landscape.", "es": "Pieza contemplativa inspirada en textura y paisaje."}, "Warm cinematic cue with scale and mystery.": {"en": "Warm cinematic cue with scale and mystery.", "es": "Pieza cinematográfica cálida con amplitud y misterio."}, "Playful melodic piece with game energy.": {"en": "Playful melodic piece with game energy.", "es": "Pieza melódica lúdica con energía de videojuego."}, "Relaxed ambient cue designed for soft mood, space and understated atmosphere.": {"en": "Relaxed ambient cue designed for soft mood, space and understated atmosphere.", "es": "Pieza ambiental relajada diseñada para un clima suave, espacio y atmósfera contenida."}, "Playlist · Lofi y Proyectos Rotos": {"en": "Playlist · Lofi and Broken Projects", "es": "Playlist · Lofi y Proyectos Rotos"}, "A curated playlist of lofi sketches, unfinished ideas and rescued fragments. The archive of broken things that were still worth keeping.": {"en": "A curated playlist of lofi sketches, unfinished ideas and rescued fragments. The archive of broken things that were still worth keeping.", "es": "Una playlist de bocetos lofi, ideas inacabadas y fragmentos rescatados."}, "About Me": {"en": "About Me", "es": "Sobre mí"}, "Composer, producer and sound designer focused on film, games and audiovisual storytelling, with strong hands-on experience in modern production workflows.": {"en": "Composer, producer and sound designer focused on film, games and audiovisual storytelling, with strong hands-on experience in modern production workflows.", "es": "Compositor, productor y diseñador sonoro centrado en cine, videojuegos y narrativa audiovisual, con experiencia práctica en flujos modernos de producción."}, "His background combines formal music studies, higher technical audio education and practical performance experience. Training at CIM Benimaclet in harmony and piano, together with higher technical sound studies at IES La Marxadella, created a strong bridge between musical creativity and professional production standards.": {"en": "His background combines formal music studies, higher technical audio education and practical performance experience. Training at CIM Benimaclet in harmony and piano, together with higher technical sound studies at IES La Marxadella, created a strong bridge between musical creativity and professional production standards.", "es": "Su trayectoria combina estudios musicales formales, formación técnica superior en sonido y experiencia práctica. La formación en armonía y piano en CIM Benimaclet, junto con los estudios superiores de sonido en IES La Marxadella, crea un puente sólido entre creatividad musical y producción profesional."}, "His approach is less about dumping music onto images and more about understanding what the project actually needs. Sometimes that means restraint, sometimes tension, sometimes melody, and sometimes admitting that silence is doing more work than half the cue.": {"en": "His approach is less about dumping music onto images and more about understanding what the project actually needs. Sometimes that means restraint, sometimes tension, sometimes melody, and sometimes admitting that silence is doing more work than half the cue.", "es": "Su enfoque no consiste en colocar música encima de imágenes, sino en entender qué necesita realmente el proyecto. A veces implica contención, tensión, melodía o admitir que el silencio trabaja más que media composición."}, "He develops music oriented toward narrative, atmosphere and emotional impact, from immersive sound worlds to direct thematic writing. His work includes short films, videogames, podcasts, rescoring exercises, live performance and independent audiovisual collaborations.": {"en": "He develops music oriented toward narrative, atmosphere and emotional impact, from immersive sound worlds to direct thematic writing. His work includes short films, videogames, podcasts, rescoring exercises, live performance and independent audiovisual collaborations.", "es": "Desarrolla música orientada a narrativa, atmósfera e impacto emocional, desde mundos sonoros inmersivos hasta escritura temática directa. Su trabajo incluye cortometrajes, videojuegos, podcasts, rescoring, directo y colaboraciones audiovisuales independientes."}, "Years of hands-on work across composition, production, live performance and scoring. Strong DAW fluency, real projects delivered, and no dependence on vague promises. Rare behavior online.": {"en": "Years of hands-on work across composition, production, live performance and scoring. Strong DAW fluency, real projects delivered, and no dependence on vague promises. Rare behavior online.", "es": "Años de trabajo práctico en composición, producción, directo y scoring. Dominio sólido de DAWs, proyectos reales entregados y ninguna dependencia de promesas vagas."}, "What the work usually focuses on": {"en": "What the work usually focuses on", "es": "En qué se centra el trabajo"}, "Original music for games, film and audiovisual media": {"en": "Original music for games, film and audiovisual media", "es": "Música original para videojuegos, cine y medios audiovisuales"}, "Production, editing, mixing and project finishing": {"en": "Production, editing, mixing and project finishing", "es": "Producción, edición, mezcla y acabado de proyectos"}, "Atmosphere, pacing and emotional framing": {"en": "Atmosphere, pacing and emotional framing", "es": "Atmósfera, ritmo y encuadre emocional"}, "Rescoring and reinterpretation of existing scenes": {"en": "Rescoring and reinterpretation of existing scenes", "es": "Rescoring y reinterpretación de escenas existentes"}, "Hybrid writing between cinematic, ambient and melodic language": {"en": "Hybrid writing between cinematic, ambient and melodic language", "es": "Escritura híbrida entre lenguaje cinematográfico, ambiental y melódico"}, "Training and background": {"en": "Training and background", "es": "Formación y trayectoria"}, "Harmony and piano studies at CIM Benimaclet (Valencia)": {"en": "Harmony and piano studies at CIM Benimaclet (Valencia)", "es": "Estudios de armonía y piano en CIM Benimaclet (Valencia)"}, "Higher technical sound studies at IES La Marxadella": {"en": "Higher technical sound studies at IES La Marxadella", "es": "Estudios superiores técnicos de sonido en IES La Marxadella"}, "Advanced workflow in Ableton Live, Pro Tools, Cubase, Logic and Kontakt": {"en": "Advanced workflow in Ableton Live, Pro Tools, Cubase, Logic and Kontakt", "es": "Flujo avanzado en Ableton Live, Pro Tools, Cubase, Logic y Kontakt"}, "Training in music production, recording and post-production": {"en": "Training in music production, recording and post-production", "es": "Formación en producción musical, grabación y postproducción"}, "Specific formation in composition and production for soundtracks": {"en": "Specific formation in composition and production for soundtracks", "es": "Formación específica en composición y producción para bandas sonoras"}, "Why this portfolio exists": {"en": "Why this portfolio exists", "es": "Por qué existe este portfolio"}, "This portfolio exists to show applied work, not abstract promises. Released projects, scoring demos, rescoring experiments, production pieces and live-oriented experience all live here because range matters more than fake branding.": {"en": "This portfolio exists to show applied work, not abstract promises. Released projects, scoring demos, rescoring experiments, production pieces and live-oriented experience all live here because range matters more than fake branding.", "es": "Este portfolio existe para mostrar trabajo aplicado, no promesas abstractas. Proyectos publicados, demos de scoring, rescoring, piezas de producción y experiencia en directo conviven aquí porque la versatilidad importa más que el branding falso."}, "services_more": {"en": "Learn more", "es": "Saber más"}, "Learn more": {"en": "Learn more", "es": "Saber más"}, "service1_title": {"en": "Music composition", "es": "Composición musical"}, "service1_text": {"en": "Original music shaped around narrative: main themes, motifs, atmosphere, tension and emotional development so the image has a recognizable identity.", "es": "Música original diseñada desde la narrativa: temas principales, motivos, atmósferas, tensión y desarrollo emocional para que la imagen tenga una identidad reconocible."}, "service2_title": {"en": "Sound design", "es": "Diseño de sonido"}, "service2_text": {"en": "Ambiences, transitions, impacts, textures, effects and sonic layers built to create space, rhythm and immersion.", "es": "Diseño de ambientes, transiciones, impactos, texturas, efectos y capas sonoras para construir espacio, ritmo e inmersión."}, "service3_title": {"en": "Music production", "es": "Producción musical"}, "service3_text": {"en": "Full music production: structure, arrangement, editing, MIDI programming, sound selection and session finishing.", "es": "Producción musical completa: estructura, arreglos, edición, programación MIDI, selección tímbrica y acabado de sesión."}, "service4_title": {"en": "Professional recording", "es": "Grabación profesional"}, "service4_text": {"en": "Careful recording of voices and instruments, focused on performance, takes, cleanup, dynamics and later use in the mix.", "es": "Grabación cuidada de voces e instrumentos, atendiendo a interpretación, toma, limpieza, dinámica y uso posterior en mezcla."}, "service5_title": {"en": "Mixing and mastering", "es": "Mezcla y mastering"}, "service5_text": {"en": "Mixing and mastering to organize depth, balance frequencies, control dynamics, gain clarity and adapt the result to platforms or final delivery.", "es": "Mezcla y mastering para ordenar planos, equilibrar frecuencias, controlar dinámica, ganar claridad y adaptar el resultado a plataformas o entrega final."}, "service6_title": {"en": "Orchestral arrangements", "es": "Arreglos orquestales"}, "service6_text": {"en": "Orchestral and hybrid arrangements to expand color, intensity and emotional scale: strings, brass, woodwinds, percussion, piano and electronic layers.", "es": "Arreglos orquestales e híbridos para ampliar color, intensidad y dimensión emocional: cuerdas, metales, maderas, percusión, piano y capas electrónicas."}, "Original music, production and sound support for games, film and audiovisual projects.": {"en": "Original music, production and sound support for games, film and audiovisual projects.", "es": "Música original, producción y apoyo sonoro para videojuegos, cine y proyectos audiovisuales."}};
+  const TEXT_TRANSLATIONS = {
+  "I compose, produce and design sound for film, games and audiovisual storytelling.": {
+    "en": "I compose, produce and design sound for film, games and audiovisual storytelling.",
+    "es": "Compongo, produzco y diseño sonido para cine, videojuegos y narrativa audiovisual."
+  },
+  "Home": {
+    "en": "Home",
+    "es": "Inicio"
+  },
+  "Projects": {
+    "en": "Projects",
+    "es": "Proyectos"
+  },
+  "Services": {
+    "en": "Services",
+    "es": "Servicios"
+  },
+  "Opinions": {
+    "en": "Opinions",
+    "es": "Opiniones"
+  },
+  "About": {
+    "en": "About",
+    "es": "Sobre mí"
+  },
+  "Contact": {
+    "en": "Contact",
+    "es": "Contacto"
+  },
+  "Menu": {
+    "en": "Menu",
+    "es": "Menú"
+  },
+  "Teo Torres. All rights reserved.": {
+    "en": "Teo Torres. All rights reserved.",
+    "es": "Teo Torres. Todos los derechos reservados."
+  },
+  "Bring your music to life": {
+    "en": "Bring your music to life",
+    "es": "Da vida a tu música"
+  },
+  "Let's work together": {
+    "en": "Let's work together",
+    "es": "Trabajemos juntos"
+  },
+  "Queen's Gambit": {
+    "en": "Queen's Gambit",
+    "es": "Queen's Gambit"
+  },
+  "Rescore inspired by The Queen's Gambit. Focused on elegance, suspense and strategic dramatic movement.": {
+    "en": "Rescore inspired by The Queen's Gambit. Focused on elegance, suspense and strategic dramatic movement.",
+    "es": "Rescore inspirado en The Queen's Gambit, centrado en la elegancia, el suspense y el movimiento dramático estratégico."
+  },
+  "Fractured": {
+    "en": "Fractured",
+    "es": "Fractured"
+  },
+  "Rescoring of a Nuendo demo scene created for academic training. Focused on cinematic pacing, atmosphere and dramatic reinforcement.": {
+    "en": "Rescoring of a Nuendo demo scene created for academic training. Focused on cinematic pacing, atmosphere and dramatic reinforcement.",
+    "es": "Rescoring de una escena demo de Nuendo realizado para clase, centrado en ritmo cinematográfico, atmósfera y refuerzo dramático."
+  },
+  "TetherGeist Music Scoring Contest": {
+    "en": "TetherGeist Music Scoring Contest",
+    "es": "TetherGeist Music Scoring Contest"
+  },
+  "Nominated entry at the IndieGame Contest, 2nd worldwide edition. Hybrid scoring with tension design, impact accents and modern trailer energy.": {
+    "en": "Nominated entry at the IndieGame Contest, 2nd worldwide edition. Hybrid scoring with tension design, impact accents and modern trailer energy.",
+    "es": "Demo nominada en la segunda edición mundial del IndieGame Contest. Música híbrida con diseño de tensión, acentos de impacto y energía moderna de tráiler."
+  },
+  "Eagle Brothers": {
+    "en": "Eagle Brothers",
+    "es": "Eagle Brothers"
+  },
+  "Pilot episode of a mini-series inspired by Regular Show, created by students from the University of Valencia.": {
+    "en": "Pilot episode of a mini-series inspired by Regular Show, created by students from the University of Valencia.",
+    "es": "Piloto de una miniserie inspirada en Historias corrientes, creada por alumnos de la Universidad de Valencia."
+  },
+  "Latest release": {
+    "en": "Latest release",
+    "es": "Último lanzamiento"
+  },
+  "The Visitor Effect": {
+    "en": "The Visitor Effect",
+    "es": "The Visitor Effect"
+  },
+  "You wake up as R3D, an alien robot trapped in a strange simulation. You do not know who controls you or why, but something does not add up. Every action can bring you closer to the truth or bury you deeper in the lie. How far are you willing to go to find the way out?": {
+    "en": "You wake up as R3D, an alien robot trapped in a strange simulation. You do not know who controls you or why, but something does not add up. Every action can bring you closer to the truth or bury you deeper in the lie. How far are you willing to go to find the way out?",
+    "es": "Despiertas como R3D, un robot alienígena prisionero en una simulación extraña. No sabes quién te controla ni por qué, pero algo no encaja. Cada acción puede acercarte a la verdad o sumirte más en la mentira. ¿Hasta dónde estás dispuesto a llegar para encontrar la salida?"
+  },
+  "Available on Steam, Nintendo Switch, Xbox, PlayStation and Google Play, with music and audiovisual work connected to a real released project.": {
+    "en": "Available on Steam, Nintendo Switch, Xbox, PlayStation and Google Play, with music and audiovisual work connected to a real released project.",
+    "es": "Disponible en Steam, Nintendo Switch, Xbox, PlayStation y Google Play, con trabajo musical y audiovisual vinculado a un proyecto publicado real."
+  },
+  "Watch trailer": {
+    "en": "Watch trailer",
+    "es": "Ver tráiler"
+  },
+  "View release": {
+    "en": "View release",
+    "es": "Ver lanzamiento"
+  },
+  "I am": {
+    "en": "I am",
+    "es": "Soy"
+  },
+  "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales. Desarrollo música orientada a narrativa, atmósfera e impacto emocional, desde paisajes sonoros inmersivos hasta piezas temáticas más directas y memorables. He trabajado en proyectos independientes como cortometrajes, videojuegos, podcasts y rescores cinematográficos. Me he formado en sonido para audiovisuales en IES La Marxadella y en composición para bandas sonoras con profesorado vinculado a Berklee, además de estudios de piano con Ricardo Belda. Busco aportar identidad sonora real a cada proyecto, no solo música de fondo.": {
+    "en": "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media. I create music shaped around narrative, atmosphere and emotional impact, from immersive sound worlds to more direct and memorable thematic writing. I have worked on independent projects including short films, video games, podcasts and film rescoring. My training includes audiovisual sound studies at IES La Marxadella, soundtrack composition with teachers linked to Berklee, and piano studies with Ricardo Belda. My goal is to give each project a real sonic identity, not just background music.",
+    "es": "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales. Desarrollo música orientada a narrativa, atmósfera e impacto emocional, desde paisajes sonoros inmersivos hasta piezas temáticas más directas y memorables. He trabajado en proyectos independientes como cortometrajes, videojuegos, podcasts y rescores cinematográficos. Me he formado en sonido para audiovisuales en IES La Marxadella y en composición para bandas sonoras con profesorado vinculado a Berklee, además de estudios de piano con Ricardo Belda. Busco aportar identidad sonora real a cada proyecto, no solo música de fondo."
+  },
+  "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media. I create music shaped around narrative, atmosphere and emotional impact, from immersive sound worlds to more direct and memorable thematic writing. I have worked on independent projects including short films, video games, podcasts and film rescoring. My training includes audiovisual sound studies at IES La Marxadella, soundtrack composition with teachers linked to Berklee, and piano studies with Ricardo Belda. My goal is to give each project a real sonic identity, not just background music.": {
+    "en": "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media. I create music shaped around narrative, atmosphere and emotional impact, from immersive sound worlds to more direct and memorable thematic writing. I have worked on independent projects including short films, video games, podcasts and film rescoring. My training includes audiovisual sound studies at IES La Marxadella, soundtrack composition with teachers linked to Berklee, and piano studies with Ricardo Belda. My goal is to give each project a real sonic identity, not just background music.",
+    "es": "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales. Desarrollo música orientada a narrativa, atmósfera e impacto emocional, desde paisajes sonoros inmersivos hasta piezas temáticas más directas y memorables. He trabajado en proyectos independientes como cortometrajes, videojuegos, podcasts y rescores cinematográficos. Me he formado en sonido para audiovisuales en IES La Marxadella y en composición para bandas sonoras con profesorado vinculado a Berklee, además de estudios de piano con Ricardo Belda. Busco aportar identidad sonora real a cada proyecto, no solo música de fondo."
+  },
+  "Otros proyectos": {
+    "en": "Other projects",
+    "es": "Otros proyectos"
+  },
+  "Trabajos musicales adicionales, colaboraciones y piezas vinculadas a proyectos culturales y audiovisuales.": {
+    "en": "Additional musical works, collaborations and pieces linked to cultural and audiovisual projects.",
+    "es": "Trabajos musicales adicionales, colaboraciones y piezas vinculadas a proyectos culturales y audiovisuales."
+  },
+  "Fernando Zóbel - Homenaje a Patricio Montojo": {
+    "en": "Fernando Zóbel - Tribute to Patricio Montojo",
+    "es": "Fernando Zóbel - Homenaje a Patricio Montojo"
+  },
+  "Composición inspirada en la obra y sensibilidad visual de Fernando Zóbel. Una pieza contemplativa y atmosférica que traslada paisaje, niebla y textura pictórica al lenguaje musical.": {
+    "en": "Composition inspired by the work and visual sensitivity of Fernando Zóbel. A contemplative, atmospheric piece that translates landscape, mist and pictorial texture into musical language.",
+    "es": "Composición inspirada en la obra y sensibilidad visual de Fernando Zóbel. Una pieza contemplativa y atmosférica que traslada paisaje, niebla y textura pictórica al lenguaje musical."
+  },
+  "Desert Demo": {
+    "en": "Desert Demo",
+    "es": "Desert Demo"
+  },
+  "Composición inspirada en paisajes desérticos y travesía. Sonoridad amplia, atmósfera cálida y sensación de movimiento entre arena, horizonte y misterio cinematográfico.": {
+    "en": "Composition inspired by desert landscapes and travel. Expansive sound, warm atmosphere and a sense of movement through sand, horizon and cinematic mystery.",
+    "es": "Composición inspirada en paisajes desérticos y travesía. Sonoridad amplia, atmósfera cálida y sensación de movimiento entre arena, horizonte y misterio cinematográfico."
+  },
+  "Nintendo Demo": {
+    "en": "Nintendo Demo",
+    "es": "Nintendo Demo"
+  },
+  "Demo creativa construida con sonidos originales inspirados en Nintendo. Enfoque lúdico, dinámico y melódico con estética retro-modernizada.": {
+    "en": "Creative demo built with original sounds inspired by Nintendo. A playful, dynamic and melodic approach with a modernised retro aesthetic.",
+    "es": "Demo creativa construida con sonidos originales inspirados en Nintendo. Enfoque lúdico, dinámico y melódico con estética retro-modernizada."
+  },
+  "Shopping Trip Short Film": {
+    "en": "Shopping Trip Short Film",
+    "es": "Cortometraje Shopping Trip"
+  },
+  "Shopping Trip": {
+    "en": "Shopping Trip",
+    "es": "Shopping Trip"
+  },
+  "Short film rescore focused on irony, tension and everyday surrealism through original music.": {
+    "en": "Short film rescore focused on irony, tension and everyday surrealism through original music.",
+    "es": "Rescore de cortometraje centrado en ironía, tensión y surrealismo cotidiano mediante música original."
+  },
+  "Proyecto basado en el cortometraje": {
+    "en": "Project based on the short film",
+    "es": "Proyecto basado en el cortometraje"
+  },
+  "People who worked with me saying nice things. Rare and suspicious, but useful.": {
+    "en": "People who worked with me saying nice things. Rare and suspicious, but useful.",
+    "es": "Personas que han trabajado conmigo diciendo cosas buenas. Raro y sospechoso, pero útil."
+  },
+  "People who worked with me saying nice things. Rare, suspicious and still useful.": {
+    "en": "People who worked with me saying nice things. Rare, suspicious and still useful.",
+    "es": "Personas que han trabajado conmigo diciendo cosas buenas. Raro, sospechoso y aun así útil."
+  },
+  "Working with sound is not just technique. It is structure, emotion and intent. These are the main areas where I can help shape your project into something that sounds finished and worth hearing.": {
+    "en": "Working with sound is not just technique. It is structure, emotion and intent. These are the main areas where I can help shape your project into something that sounds finished and worth hearing.",
+    "es": "Trabajar con sonido no es solo técnica. Es estructura, emoción e intención. Estas son las principales áreas en las que puedo ayudarte a convertir tu proyecto en algo acabado y digno de ser escuchado."
+  },
+  "Composición musical": {
+    "en": "Music composition",
+    "es": "Composición musical"
+  },
+  "Diseño de sonido": {
+    "en": "Sound design",
+    "es": "Diseño de sonido"
+  },
+  "Producción musical": {
+    "en": "Music production",
+    "es": "Producción musical"
+  },
+  "Grabación profesional": {
+    "en": "Professional recording",
+    "es": "Grabación profesional"
+  },
+  "Mezcla y mastering": {
+    "en": "Mixing and mastering",
+    "es": "Mezcla y mastering"
+  },
+  "Arreglos orquestales": {
+    "en": "Orchestral arrangements",
+    "es": "Arreglos orquestales"
+  },
+  "Música original concebida para reforzar identidad, emoción y narrativa en proyectos audiovisuales y videojuegos.": {
+    "en": "Original music created to strengthen identity, emotion and narrative in audiovisual projects and video games.",
+    "es": "Música original concebida para reforzar identidad, emoción y narrativa en proyectos audiovisuales y videojuegos."
+  },
+  "Creación de ambientes, texturas, efectos y capas sonoras que aportan profundidad y carácter al proyecto.": {
+    "en": "Creation of ambiences, textures, effects and sonic layers that add depth and character to the project.",
+    "es": "Creación de ambientes, texturas, efectos y capas sonoras que aportan profundidad y carácter al proyecto."
+  },
+  "Producción, edición y acabado profesional para que cada tema llegue sólido, competitivo y listo para publicar.": {
+    "en": "Production, editing and professional finishing so each track lands solid, competitive and ready to release.",
+    "es": "Producción, edición y acabado profesional para que cada tema llegue sólido, competitivo y listo para publicar."
+  },
+  "Grabación cuidada de voces e instrumentos con enfoque técnico y artístico para obtener tomas utilizables y con carácter.": {
+    "en": "Careful recording of voices and instruments with both technical and artistic focus to capture usable takes with character.",
+    "es": "Grabación cuidada de voces e instrumentos con enfoque técnico y artístico para obtener tomas utilizables y con carácter."
+  },
+  "Balance, pegada y claridad final para que el proyecto suene profesional en cualquier sistema.": {
+    "en": "Balance, punch and final clarity so the project sounds professional on any playback system.",
+    "es": "Balance, pegada y claridad final para que el proyecto suene profesional en cualquier sistema."
+  },
+  "Adaptación y desarrollo de ideas musicales con enfoque orquestal para ampliar impacto, color y expresividad.": {
+    "en": "Adaptation and development of musical ideas with an orchestral approach to expand impact, colour and expression.",
+    "es": "Adaptación y desarrollo de ideas musicales con enfoque orquestal para ampliar impacto, color y expresividad."
+  },
+  "Contact me": {
+    "en": "Contact me",
+    "es": "Contacto"
+  },
+  "If you need original music, production help or a soundtrack that actually supports the project instead of filling silence, write to me.": {
+    "en": "If you need original music, production help or a soundtrack that actually supports the project instead of filling silence, write to me.",
+    "es": "Si necesitas música original, ayuda de producción o una banda sonora que realmente sostenga el proyecto en lugar de rellenar silencio, escríbeme."
+  },
+  "Name": {
+    "en": "Name",
+    "es": "Nombre"
+  },
+  "Email": {
+    "en": "Email",
+    "es": "Correo"
+  },
+  "Project": {
+    "en": "Project",
+    "es": "Proyecto"
+  },
+  "Message": {
+    "en": "Message",
+    "es": "Mensaje"
+  },
+  "Send message": {
+    "en": "Send message",
+    "es": "Enviar mensaje"
+  },
+  "Music built for the project, not for ego": {
+    "en": "Music built for the project, not for ego",
+    "es": "Música creada para el proyecto, no para el ego"
+  },
+  "Composition, production and sound work for games, film, trailers, artists and audiovisual projects. Clear communication, flexible revisions and music shaped around what the piece actually needs.": {
+    "en": "Composition, production and sound work for games, film, trailers, artists and audiovisual projects. Clear communication, flexible revisions and music shaped around what the piece actually needs.",
+    "es": "Composición, producción y trabajo sonoro para videojuegos, cine, tráileres, artistas y proyectos audiovisuales. Comunicación clara, revisiones flexibles y música adaptada a lo que la pieza necesita."
+  },
+  "Full score and production support": {
+    "en": "Full score and production support",
+    "es": "Banda sonora completa y apoyo de producción"
+  },
+  "For projects that need more than a nice cue. This includes spotting, style definition, mockups, revisions, delivery planning and final production ready for the format you are releasing.": {
+    "en": "For projects that need more than a nice cue. This includes spotting, style definition, mockups, revisions, delivery planning and final production ready for the format you are releasing.",
+    "es": "Para proyectos que necesitan algo más que una pieza bonita. Incluye spotting, definición de estilo, maquetas, revisiones, planificación de entregas y producción final."
+  },
+  "Original music for videogames, short films and audiovisual media": {
+    "en": "Original music for videogames, short films and audiovisual media",
+    "es": "Música original para videojuegos, cortometrajes y medios audiovisuales"
+  },
+  "Thematic writing, ambience, tension building and hybrid scoring": {
+    "en": "Thematic writing, ambience, tension building and hybrid scoring",
+    "es": "Escritura temática, ambientes, construcción de tensión y composición híbrida"
+  },
+  "Communication throughout the process instead of disappearing into a cave": {
+    "en": "Communication throughout the process instead of disappearing into a cave",
+    "es": "Comunicación durante todo el proceso"
+  },
+  "Stems, mixes and export versions prepared for real use": {
+    "en": "Stems, mixes and export versions prepared for real use",
+    "es": "Stems, mezclas y versiones de exportación preparadas para uso real"
+  },
+  "Game and film composition": {
+    "en": "Game and film composition",
+    "es": "Composición para videojuegos y cine"
+  },
+  "Music designed to support narrative, mechanics, pacing and emotional tone, whether the project needs subtle atmosphere or a more direct melodic identity.": {
+    "en": "Music designed to support narrative, mechanics, pacing and emotional tone, whether the project needs subtle atmosphere or a more direct melodic identity.",
+    "es": "Música diseñada para apoyar narrativa, mecánicas, ritmo y tono emocional, tanto si el proyecto necesita atmósfera sutil como una identidad melódica más directa."
+  },
+  "Main themes and character ideas": {
+    "en": "Main themes and character ideas",
+    "es": "Temas principales e ideas para personajes"
+  },
+  "Loopable gameplay cues": {
+    "en": "Loopable gameplay cues",
+    "es": "Piezas en bucle para gameplay"
+  },
+  "Cinematic and trailer style writing": {
+    "en": "Cinematic and trailer style writing",
+    "es": "Escritura cinematográfica y de tráiler"
+  },
+  "Rescoring and scene-specific music": {
+    "en": "Rescoring and scene-specific music",
+    "es": "Rescoring y música específica para escenas"
+  },
+  "Production and mixing": {
+    "en": "Production and mixing",
+    "es": "Producción y mezcla"
+  },
+  "From raw session to polished track. Editing, arrangement support, balancing and finishing for music that needs structure and impact instead of another half-finished demo.": {
+    "en": "From raw session to polished track. Editing, arrangement support, balancing and finishing for music that needs structure and impact instead of another half-finished demo.",
+    "es": "De la sesión en bruto al tema acabado. Edición, apoyo de arreglos, balance y acabado para música que necesita estructura e impacto."
+  },
+  "Track production and arrangement": {
+    "en": "Track production and arrangement",
+    "es": "Producción y arreglo de temas"
+  },
+  "Session cleanup and editing": {
+    "en": "Session cleanup and editing",
+    "es": "Limpieza y edición de sesiones"
+  },
+  "Mix preparation and delivery": {
+    "en": "Mix preparation and delivery",
+    "es": "Preparación y entrega de mezcla"
+  },
+  "Creative feedback on the piece itself": {
+    "en": "Creative feedback on the piece itself",
+    "es": "Feedback creativo sobre la pieza"
+  },
+  "Orchestral and hybrid writing": {
+    "en": "Orchestral and hybrid writing",
+    "es": "Escritura orquestal e híbrida"
+  },
+  "For projects that need scale, motion and texture without sounding like a generic preset wall. Live feel where possible, detailed mockups where necessary.": {
+    "en": "For projects that need scale, motion and texture without sounding like a generic preset wall. Live feel where possible, detailed mockups where necessary.",
+    "es": "Para proyectos que necesitan escala, movimiento y textura sin sonar como una pared genérica de presets."
+  },
+  "Orchestral mockups": {
+    "en": "Orchestral mockups",
+    "es": "Maquetas orquestales"
+  },
+  "Hybrid cinematic textures": {
+    "en": "Hybrid cinematic textures",
+    "es": "Texturas cinematográficas híbridas"
+  },
+  "Ambient and emotional piano writing": {
+    "en": "Ambient and emotional piano writing",
+    "es": "Escritura ambiental y emocional para piano"
+  },
+  "Contemporary dramatic scoring": {
+    "en": "Contemporary dramatic scoring",
+    "es": "Composición dramática contemporánea"
+  },
+  "Collaboration workflow": {
+    "en": "Collaboration workflow",
+    "es": "Flujo de colaboración"
+  },
+  "The point is not to impose a signature at any cost. The point is to make the project sound right. That means references, tests, revisions and honest decisions when a cue needs to change.": {
+    "en": "The point is not to impose a signature at any cost. The point is to make the project sound right. That means references, tests, revisions and honest decisions when a cue needs to change.",
+    "es": "El objetivo no es imponer una firma a cualquier precio. El objetivo es que el proyecto suene como debe. Eso implica referencias, pruebas, revisiones y decisiones honestas."
+  },
+  "Fast concept tests when needed": {
+    "en": "Fast concept tests when needed",
+    "es": "Pruebas rápidas de concepto"
+  },
+  "Open revision process": {
+    "en": "Open revision process",
+    "es": "Proceso de revisión abierto"
+  },
+  "Clear delivery planning": {
+    "en": "Clear delivery planning",
+    "es": "Planificación clara de entregas"
+  },
+  "Adaptation to scope and deadlines": {
+    "en": "Adaptation to scope and deadlines",
+    "es": "Adaptación al alcance y plazos"
+  },
+  "Need something specific that is not listed here? Most real projects are messy and slightly undefined at the start. The useful part is shaping the music around the brief, not pretending every commission fits inside a cute category.": {
+    "en": "Need something specific that is not listed here? Most real projects are messy and slightly undefined at the start. The useful part is shaping the music around the brief, not pretending every commission fits inside a cute category.",
+    "es": "¿Necesitas algo concreto que no aparece aquí? La mayoría de proyectos reales empiezan desordenados y algo indefinidos. Lo útil es construir la música alrededor del encargo."
+  },
+  "Let’s talk about the project": {
+    "en": "Let’s talk about the project",
+    "es": "Hablemos del proyecto"
+  },
+  "If you need original music, production help, rescoring or a soundtrack that actually supports the work instead of suffocating it, this is where the conversation starts.": {
+    "en": "If you need original music, production help, rescoring or a soundtrack that actually supports the work instead of suffocating it, this is where the conversation starts.",
+    "es": "Si necesitas música original, ayuda de producción, rescoring o una banda sonora que apoye la obra en lugar de asfixiarla, aquí empieza la conversación."
+  },
+  "Direct contact": {
+    "en": "Direct contact",
+    "es": "Contacto directo"
+  },
+  "Pick the channel that makes sense. Some people insist on emailing. Others apparently prefer Discord. Civilization remains uneven.": {
+    "en": "Pick the channel that makes sense. Some people insist on emailing. Others apparently prefer Discord. Civilization remains uneven.",
+    "es": "Elige el canal que tenga sentido. Algunas personas insisten en el correo. Otras prefieren Discord."
+  },
+  "Best messages usually include the type of project, what stage it is in, rough timing, and what you actually need. Vague enthusiasm is charming but not operational.": {
+    "en": "Best messages usually include the type of project, what stage it is in, rough timing, and what you actually need. Vague enthusiasm is charming but not operational.",
+    "es": "Los mejores mensajes incluyen tipo de proyecto, fase, plazos aproximados y qué necesitas exactamente."
+  },
+  "A real form layout, because copying an email address into a blank message like it’s 2006 is a strange ritual.": {
+    "en": "A real form layout, because copying an email address into a blank message like it’s 2006 is a strange ritual.",
+    "es": "Un formulario real, porque copiar un correo en un mensaje en blanco como si fuera 2006 es un ritual extraño."
+  },
+  "Project type": {
+    "en": "Project type",
+    "es": "Tipo de proyecto"
+  },
+  "Game": {
+    "en": "Game",
+    "es": "Videojuego"
+  },
+  "Film / Short film": {
+    "en": "Film / Short film",
+    "es": "Cine / Cortometraje"
+  },
+  "Rescoring": {
+    "en": "Rescoring",
+    "es": "Rescoring"
+  },
+  "Production / Mixing": {
+    "en": "Production / Mixing",
+    "es": "Producción / Mezcla"
+  },
+  "Other": {
+    "en": "Other",
+    "es": "Otro"
+  },
+  "Open email": {
+    "en": "Open email",
+    "es": "Abrir correo"
+  },
+  "This form is currently visual only in preview. Once the site is wired properly, it can connect to email, Formspark, Netlify Forms, Formspree, or whatever modern workaround humans are using this week.": {
+    "en": "This form is currently visual only in preview. Once the site is wired properly, it can connect to email, Formspark, Netlify Forms, Formspree, or whatever modern workaround humans are using this week.",
+    "es": "Este formulario ahora es solo visual en la previsualización. Cuando la web esté conectada, puede enlazarse con email, Formspark, Netlify Forms o Formspree."
+  },
+  "People behind the projects": {
+    "en": "People behind the projects",
+    "es": "Personas detrás de los proyectos"
+  },
+  "The same testimonials from the main page, but gathered here in one place so the menu item stops pretending and starts doing its job.": {
+    "en": "The same testimonials from the main page, but gathered here in one place so the menu item stops pretending and starts doing its job.",
+    "es": "Los mismos testimonios de la página principal, reunidos aquí para que el menú haga su trabajo."
+  },
+  "Profesor de piano": {
+    "en": "Piano teacher",
+    "es": "Profesor de piano"
+  },
+  "Profesor de Ableton y Music Scoring": {
+    "en": "Ableton and Music Scoring teacher",
+    "es": "Profesor de Ableton y Music Scoring"
+  },
+  "Profesora de comunicación y expresión sonora": {
+    "en": "Sound communication and expression teacher",
+    "es": "Profesora de comunicación y expresión sonora"
+  },
+  "Creador de The Visitor Effect": {
+    "en": "Creator of The Visitor Effect",
+    "es": "Creador de The Visitor Effect"
+  },
+  "Creadora de contenido": {
+    "en": "Content creator",
+    "es": "Creadora de contenido"
+  },
+  "Creador de Eagle Brothers": {
+    "en": "Creator of Eagle Brothers",
+    "es": "Creador de Eagle Brothers"
+  },
+  "Gran sensibilidad musical y muy buena capacidad para convertir ideas en piezas reales y funcionales.": {
+    "en": "Great musical sensitivity and a strong ability to turn ideas into real, functional pieces.",
+    "es": "Gran sensibilidad musical y muy buena capacidad para convertir ideas en piezas reales y funcionales."
+  },
+  "Buen criterio de producción, rapidez aprendiendo y una visión moderna aplicada a Ableton y music scoring.": {
+    "en": "Good production judgement, fast learning and a modern vision applied to Ableton and music scoring.",
+    "es": "Buen criterio de producción, rapidez aprendiendo y una visión moderna aplicada a Ableton y music scoring."
+  },
+  "Destaca por creatividad, comunicación sonora y capacidad expresiva dentro de proyectos audiovisuales.": {
+    "en": "Stands out for creativity, sound communication and expressive ability in audiovisual projects.",
+    "es": "Destaca por creatividad, comunicación sonora y capacidad expresiva dentro de proyectos audiovisuales."
+  },
+  "Proyecto con identidad clara, dirección artística sólida y ambición real dentro del desarrollo indie.": {
+    "en": "A project with a clear identity, solid art direction and real ambition within indie development.",
+    "es": "Proyecto con identidad clara, dirección artística sólida y ambición real dentro del desarrollo indie."
+  },
+  "Creatividad visual con personalidad propia y una sensibilidad estética que conecta rápido con la audiencia.": {
+    "en": "Visual creativity with its own personality and an aesthetic sensitivity that quickly connects with the audience.",
+    "es": "Creatividad visual con personalidad propia y una sensibilidad estética que conecta rápido con la audiencia."
+  },
+  "Ideas frescas, enfoque narrativo y capacidad para convertir humor y aventura en algo reconocible.": {
+    "en": "Fresh ideas, narrative focus and the ability to turn humour and adventure into something recognisable.",
+    "es": "Ideas frescas, enfoque narrativo y capacidad para convertir humor y aventura en algo reconocible."
+  },
+  "Released work, rescoring exercises and featured audiovisual pieces presented in one place.": {
+    "en": "Released work, rescoring exercises and featured audiovisual pieces presented in one place.",
+    "es": "Trabajos publicados, ejercicios de rescoring y piezas audiovisuales destacadas reunidas en un solo lugar."
+  },
+  "Narrative-driven indie game with published presence across major platforms.": {
+    "en": "Narrative-driven indie game with published presence across major platforms.",
+    "es": "Videojuego indie narrativo publicado en las principales plataformas."
+  },
+  "Featured released game project and strongest commercial proof inside the portfolio.": {
+    "en": "Featured released game project and strongest commercial proof inside the portfolio.",
+    "es": "Proyecto de videojuego publicado y principal prueba comercial dentro del portfolio."
+  },
+  "Academic scoring work with a stronger fantasy-RPG tone and immersive atmosphere design.": {
+    "en": "Academic scoring work with a stronger fantasy-RPG tone and immersive atmosphere design.",
+    "es": "Trabajo académico de composición con tono fantasy-RPG y atmósfera inmersiva."
+  },
+  "Demo Queen Gambit": {
+    "en": "Demo Queen Gambit",
+    "es": "Demo Queen Gambit"
+  },
+  "Rescore inspired by The Queen's Gambit. Elegance, tension and strategic pacing.": {
+    "en": "Rescore inspired by The Queen's Gambit. Elegance, tension and strategic pacing.",
+    "es": "Rescore inspirado en The Queen's Gambit. Elegancia, tensión y ritmo estratégico."
+  },
+  "Rescoring exercise built around restraint, suspense and controlled dramatic movement.": {
+    "en": "Rescoring exercise built around restraint, suspense and controlled dramatic movement.",
+    "es": "Ejercicio de rescoring construido sobre contención, suspense y movimiento dramático controlado."
+  },
+  "Contest entry with hybrid scoring, tension design and trailer energy.": {
+    "en": "Contest entry with hybrid scoring, tension design and trailer energy.",
+    "es": "Participación de concurso con composición híbrida, diseño de tensión y energía de tráiler."
+  },
+  "Hybrid contest cue balancing impact, momentum and a more contemporary scoring language.": {
+    "en": "Hybrid contest cue balancing impact, momentum and a more contemporary scoring language.",
+    "es": "Pieza híbrida de concurso que equilibra impacto, impulso y un lenguaje más contemporáneo."
+  },
+  "Adventure tone, melody and character-driven cue writing.": {
+    "en": "Adventure tone, melody and character-driven cue writing.",
+    "es": "Tono de aventura, melodía y escritura centrada en personajes."
+  },
+  "Animated storytelling cue with rhythmic drive and a more playful dramatic profile.": {
+    "en": "Animated storytelling cue with rhythmic drive and a more playful dramatic profile.",
+    "es": "Pieza para narración animada con impulso rítmico y perfil más lúdico."
+  },
+  "Short film rescore focused on irony, tension and everyday surrealism.": {
+    "en": "Short film rescore focused on irony, tension and everyday surrealism.",
+    "es": "Rescore de cortometraje centrado en ironía, tensión y surrealismo cotidiano."
+  },
+  "Short film rescore where the soundtrack pushes daily realism into something darker and more cinematic.": {
+    "en": "Short film rescore where the soundtrack pushes daily realism into something darker and more cinematic.",
+    "es": "Rescore de cortometraje donde la banda sonora empuja el realismo cotidiano hacia algo más oscuro y cinematográfico."
+  },
+  "Contemplative piece inspired by texture and landscape.": {
+    "en": "Contemplative piece inspired by texture and landscape.",
+    "es": "Pieza contemplativa inspirada en textura y paisaje."
+  },
+  "Warm cinematic cue with scale and mystery.": {
+    "en": "Warm cinematic cue with scale and mystery.",
+    "es": "Pieza cinematográfica cálida con amplitud y misterio."
+  },
+  "Playful melodic piece with game energy.": {
+    "en": "Playful melodic piece with game energy.",
+    "es": "Pieza melódica lúdica con energía de videojuego."
+  },
+  "Relaxed ambient cue designed for soft mood, space and understated atmosphere.": {
+    "en": "Relaxed ambient cue designed for soft mood, space and understated atmosphere.",
+    "es": "Pieza ambiental relajada diseñada para un clima suave, espacio y atmósfera contenida."
+  },
+  "Playlist · Lofi y Proyectos Rotos": {
+    "en": "Playlist · Lofi and Broken Projects",
+    "es": "Playlist · Lofi y Proyectos Rotos"
+  },
+  "A curated playlist of lofi sketches, unfinished ideas and rescued fragments. The archive of broken things that were still worth keeping.": {
+    "en": "A curated playlist of lofi sketches, unfinished ideas and rescued fragments. The archive of broken things that were still worth keeping.",
+    "es": "Una playlist de bocetos lofi, ideas inacabadas y fragmentos rescatados."
+  },
+  "About Me": {
+    "en": "About Me",
+    "es": "Sobre mí"
+  },
+  "What my work focuses on": {
+    "en": "What my work focuses on",
+    "es": "En qué se centra mi trabajo"
+  },
+  "Original music for games, film and audiovisual media": {
+    "en": "Original music for games, film and audiovisual media",
+    "es": "Música original para videojuegos, cine y medios audiovisuales"
+  },
+  "Production, editing, mixing and project finishing": {
+    "en": "Production, editing, mixing and project finishing",
+    "es": "Producción, edición, mezcla y acabado de proyectos"
+  },
+  "Atmosphere, pacing and emotional framing": {
+    "en": "Atmosphere, pacing and emotional framing",
+    "es": "Atmósfera, ritmo y encuadre emocional"
+  },
+  "Hybrid writing between cinematic, ambient and melodic language": {
+    "en": "Hybrid writing between cinematic, ambient and melodic language",
+    "es": "Escritura híbrida entre lenguaje cinematográfico, ambiental y melódico"
+  },
+  "Training and background": {
+    "en": "Training and background",
+    "es": "Formación y trayectoria"
+  },
+  "services_more": {
+    "en": "Learn more",
+    "es": "Saber más"
+  },
+  "Learn more": {
+    "en": "Learn more",
+    "es": "Saber más"
+  },
+  "service1_title": {
+    "en": "Music composition",
+    "es": "Composición musical"
+  },
+  "service1_text": {
+    "en": "Original music shaped around narrative: main themes, motifs, atmosphere, tension and emotional development so the image has a recognizable identity.",
+    "es": "Música original diseñada desde la narrativa: temas principales, motivos, atmósferas, tensión y desarrollo emocional para que la imagen tenga una identidad reconocible."
+  },
+  "service2_title": {
+    "en": "Sound design",
+    "es": "Diseño de sonido"
+  },
+  "service2_text": {
+    "en": "Ambiences, transitions, impacts, textures, effects and sonic layers built to create space, rhythm and immersion.",
+    "es": "Diseño de ambientes, transiciones, impactos, texturas, efectos y capas sonoras para construir espacio, ritmo e inmersión."
+  },
+  "service3_title": {
+    "en": "Music production",
+    "es": "Producción musical"
+  },
+  "service3_text": {
+    "en": "Full music production: structure, arrangement, editing, MIDI programming, sound selection and session finishing.",
+    "es": "Producción musical completa: estructura, arreglos, edición, programación MIDI, selección tímbrica y acabado de sesión."
+  },
+  "service4_title": {
+    "en": "Professional recording",
+    "es": "Grabación profesional"
+  },
+  "service4_text": {
+    "en": "Careful recording of voices and instruments, focused on performance, takes, cleanup, dynamics and later use in the mix.",
+    "es": "Grabación cuidada de voces e instrumentos, atendiendo a interpretación, toma, limpieza, dinámica y uso posterior en mezcla."
+  },
+  "service5_title": {
+    "en": "Mixing and mastering",
+    "es": "Mezcla y mastering"
+  },
+  "service5_text": {
+    "en": "Mixing and mastering to organize depth, balance frequencies, control dynamics, gain clarity and adapt the result to platforms or final delivery.",
+    "es": "Mezcla y mastering para ordenar planos, equilibrar frecuencias, controlar dinámica, ganar claridad y adaptar el resultado a plataformas o entrega final."
+  },
+  "service6_title": {
+    "en": "Orchestral arrangements",
+    "es": "Arreglos orquestales"
+  },
+  "service6_text": {
+    "en": "Orchestral and hybrid arrangements to expand color, intensity and emotional scale: strings, brass, woodwinds, percussion, piano and electronic layers.",
+    "es": "Arreglos orquestales e híbridos para ampliar color, intensidad y dimensión emocional: cuerdas, metales, maderas, percusión, piano y capas electrónicas."
+  },
+  "Original music, production and sound support for games, film and audiovisual projects.": {
+    "en": "Original music, production and sound support for games, film and audiovisual projects.",
+    "es": "Música original, producción y apoyo sonoro para videojuegos, cine y proyectos audiovisuales."
+  },
+  "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media.": {
+    "en": "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media.",
+    "es": "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales."
+  },
+  "Music is a fundamental part of audiovisual work, but it is often pushed aside or left until the last moment. By working with me, you can think about music from the beginning of the project and reach a more complete result, with music that truly adapts to what you are looking for.": {
+    "en": "Music is a fundamental part of audiovisual work, but it is often pushed aside or left until the last moment. By working with me, you can think about music from the beginning of the project and reach a more complete result, with music that truly adapts to what you are looking for.",
+    "es": "La música es un apartado fundamental en el audiovisual, pero muchas veces se deja apartada o para el último momento. Al trabajar conmigo, puedes tener en cuenta la música desde el principio del proyecto y llegar a un resultado más completo, con una música que realmente se adapte a lo que buscas."
+  },
+  "Music can adapt to the narrative and pacing while adding atmosphere and impact to your project. If you want that, you need original music.": {
+    "en": "Music can adapt to the narrative and pacing while adding atmosphere and impact to your project. If you want that, you need original music.",
+    "es": "La música puede adaptarse a la narrativa y al ritmo, y aportar atmósfera e impacto a tu proyecto. Si quieres que sea así, necesitas música original."
+  },
+  "Music adapted to your project from the first moment": {
+    "en": "Music adapted to your project from the first moment",
+    "es": "Música adaptada a tu proyecto desde el primer momento"
+  },
+  "Use of professional tools for film and video game music": {
+    "en": "Use of professional tools for film and video game music",
+    "es": "Uso de herramientas profesionales para música de cine y videojuegos"
+  },
+  "Higher Degree in Sound for Audiovisuals and Shows at IES La Marxadella": {
+    "en": "Higher Degree in Sound for Audiovisuals and Shows at IES La Marxadella",
+    "es": "Grado Superior en Sonido para Audiovisuales y Espectáculos en IES La Marxadella"
+  },
+  "Degree in Audiovisual Communication at the University of Valencia": {
+    "en": "Degree in Audiovisual Communication at the University of Valencia",
+    "es": "Grado en Comunicación Audiovisual en la UV"
+  },
+  "Film Scoring Composition Course with Pier Francesco": {
+    "en": "Film Scoring Composition Course with Pier Francesco",
+    "es": "Curso de composición para bandas sonoras con Pier Francesco"
+  },
+  "Film scoring masterclasses with Hans Zimmer and Danny Elfman": {
+    "en": "Film scoring masterclasses with Hans Zimmer and Danny Elfman",
+    "es": "Masterclasses de film scoring con Hans Zimmer y Danny Elfman"
+  },
+  "Mix with the Masters courses": {
+    "en": "Mix with the Masters courses",
+    "es": "Cursos de Mix with the Masters"
+  },
+  "Professional experience": {
+    "en": "Professional experience",
+    "es": "Experiencia profesional"
+  },
+  "Keyboard player in orchestra": {
+    "en": "Keyboard player in orchestra",
+    "es": "Teclista en orquesta"
+  },
+  "Sound technician": {
+    "en": "Sound technician",
+    "es": "Técnico de sonido"
+  },
+  "Lighting technician and live event setup": {
+    "en": "Lighting technician and live event setup",
+    "es": "Técnico de iluminación y montajes de espectáculos"
+  },
+  "Center of Excellence in Vocational Training co-funded by the European Union": {
+    "en": "Center of Excellence in Vocational Training co-funded by the European Union",
+    "es": "Centro de Excelencia de FP cofinanciado por la Unión Europea"
+  }
+};
 
   Object.assign(TEXT_TRANSLATIONS, {
     "Original music, production and sound support for games, film and audiovisual projects.": { en: "Original music, production and sound support for games, film and audiovisual projects.", es: "Música original, producción y apoyo sonoro para videojuegos, cine y proyectos audiovisuales." },
     "People behind the projects": { en: "People behind the projects", es: "Personas detrás de los proyectos" },
-    "Composer, producer and sound designer focused on film, games and audiovisual storytelling.": { en: "Composer, producer and sound designer focused on film, games and audiovisual storytelling.", es: "Compositor, productor y diseñador sonoro centrado en cine, videojuegos y narrativa audiovisual." },
+    "I compose, produce and design sound for film, games and audiovisual storytelling.": { en: "I compose, produce and design sound for film, games and audiovisual storytelling.", es: "Compositor, productor y diseñador sonoro centrado en cine, videojuegos y narrativa audiovisual." },
     "Let’s talk about the project": { en: "Let’s talk about the project", es: "Hablemos del proyecto" },
     "About Me": { en: "About Me", es: "Sobre mí" },
     "Services": { en: "Services", es: "Servicios" },
@@ -1621,6 +2817,276 @@ body:not(.light-mode) .socials .twitter-icon {
     "Projects": { en: "Projects", es: "Proyectos" },
     "Released work, rescoring exercises and featured audiovisual pieces presented in one place.": { en: "Released work, rescoring exercises and featured audiovisual pieces presented in one place.", es: "Trabajos publicados, ejercicios de rescoring y piezas audiovisuales destacadas reunidas en un solo lugar." }
   });
+  Object.assign(TEXT_TRANSLATIONS, {
+    "I compose, produce and design sound for film, games and audiovisual storytelling.": {
+        "en": "I compose, produce and design sound for film, games and audiovisual storytelling.",
+        "es": "Compongo, produzco y diseño sonido para cine, videojuegos y narrativa audiovisual."
+    },
+    "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media.": {
+        "en": "I am Teo Torres Basulto, a composer and producer focused on music for film, video games and audiovisual media.",
+        "es": "Soy Teo Torres Basulto, compositor y productor especializado en música para cine, videojuegos y medios audiovisuales."
+    },
+    "Music is a fundamental part of audiovisual work, but it is often pushed aside or left until the last moment. By working with me, you can think about music from the beginning of the project and reach a more complete result, with music that truly adapts to what you are looking for.": {
+        "en": "Music is a fundamental part of audiovisual work, but it is often pushed aside or left until the last moment. By working with me, you can think about music from the beginning of the project and reach a more complete result, with music that truly adapts to what you are looking for.",
+        "es": "La música es un apartado fundamental en el audiovisual, pero muchas veces se deja apartada o para el último momento. Al trabajar conmigo, puedes tener en cuenta la música desde el principio del proyecto y llegar a un resultado más completo, con una música que realmente se adapte a lo que buscas."
+    },
+    "Music can adapt to the narrative and pacing while adding atmosphere and impact to your project. If you want that, you need original music.": {
+        "en": "Music can adapt to the narrative and pacing while adding atmosphere and impact to your project. If you want that, you need original music.",
+        "es": "La música puede adaptarse a la narrativa y al ritmo, y aportar atmósfera e impacto a tu proyecto. Si quieres que sea así, necesitas música original."
+    },
+    "What my work focuses on": {
+        "en": "What my work focuses on",
+        "es": "En qué se centra mi trabajo"
+    },
+    "Music adapted to your project from the first moment": {
+        "en": "Music adapted to your project from the first moment",
+        "es": "Música adaptada a tu proyecto desde el primer momento"
+    },
+    "Use of professional tools for film and video game music": {
+        "en": "Use of professional tools for film and video game music",
+        "es": "Uso de herramientas profesionales para música de cine y videojuegos"
+    },
+    "Higher Degree in Sound for Audiovisuals and Shows at IES La Marxadella": {
+        "en": "Higher Degree in Sound for Audiovisuals and Shows at IES La Marxadella",
+        "es": "Grado Superior en Sonido para Audiovisuales y Espectáculos en IES La Marxadella"
+    },
+    "Degree in Audiovisual Communication at the University of Valencia": {
+        "en": "Degree in Audiovisual Communication at the University of Valencia",
+        "es": "Grado en Comunicación Audiovisual en la UV"
+    },
+    "Film Scoring Composition Course with Pier Francesco": {
+        "en": "Film Scoring Composition Course with Pier Francesco",
+        "es": "Curso de composición para bandas sonoras con Pier Francesco"
+    },
+    "Film scoring masterclasses with Hans Zimmer and Danny Elfman": {
+        "en": "Film scoring masterclasses with Hans Zimmer and Danny Elfman",
+        "es": "Masterclasses de film scoring con Hans Zimmer y Danny Elfman"
+    },
+    "Mix with the Masters courses": {
+        "en": "Mix with the Masters courses",
+        "es": "Cursos de Mix with the Masters"
+    },
+    "Professional experience": {
+        "en": "Professional experience",
+        "es": "Experiencia profesional"
+    },
+    "Keyboard player in orchestra": {
+        "en": "Keyboard player in orchestra",
+        "es": "Teclista en orquesta"
+    },
+    "Sound technician": {
+        "en": "Sound technician",
+        "es": "Técnico de sonido"
+    },
+    "Lighting technician and live event setup": {
+        "en": "Lighting technician and live event setup",
+        "es": "Técnico de iluminación y montajes de espectáculos"
+    }
+});
+
+
+  Object.assign(TEXT_TRANSLATIONS, {
+    "Higher Degree in Sound for Audiovisuals and Shows at IES La Marxadella, National Center of Excellence in the audiovisual sector": {
+      "en": "Higher Degree in Sound for Audiovisuals and Shows at IES La Marxadella, National Center of Excellence in the audiovisual sector",
+      "es": "Grado Superior en Sonido para Audiovisuales y Espectáculos en IES La Marxadella, Centro de Excelencia nacional del sector audiovisual"
+    },
+    "MasterClass course: Hans Zimmer Teaches Film Scoring": {
+      "en": "MasterClass course: Hans Zimmer Teaches Film Scoring",
+      "es": "Curso de MasterClass: Hans Zimmer Teaches Film Scoring"
+    },
+    "MasterClass course: Danny Elfman Teaches Music for Film": {
+      "en": "MasterClass course: Danny Elfman Teaches Music for Film",
+      "es": "Curso de MasterClass: Danny Elfman Teaches Music for Film"
+    },
+    "IES La Marxadella · National Center of Excellence in the audiovisual sector": {
+      "en": "IES La Marxadella · National Center of Excellence in the audiovisual sector",
+      "es": "IES La Marxadella · Centro de Excelencia nacional del sector audiovisual"
+    }
+  });
+
+
+
+  Object.assign(TEXT_TRANSLATIONS, {
+    "· Higher Degree in Sound for Audiovisuals and Shows · Center of Excellence in Vocational Training for the audiovisual sector · co-funded by the European Union": {
+      "en": "· Higher Degree in Sound for Audiovisuals and Shows · Center of Excellence in Vocational Training for the audiovisual sector · co-funded by the European Union",
+      "es": "· Grado Superior en Sonido para Audiovisuales y Espectáculos · Centro de Excelencia de FP del sector audiovisual · cofinanciado por la Unión Europea"
+    },
+    "IES La Marxadella · Center of Excellence in Vocational Training for the audiovisual sector · co-funded by the European Union": {
+      "en": "IES La Marxadella · Center of Excellence in Vocational Training for the audiovisual sector · co-funded by the European Union",
+      "es": "IES La Marxadella · Centro de Excelencia de FP del sector audiovisual · cofinanciado por la Unión Europea"
+    },
+    "Keyboard player in": {
+      "en": "Keyboard player in",
+      "es": "Teclista en"
+    },
+    "/ weddings and events": {
+      "en": "/ weddings and events",
+      "es": "/ bodas y eventos"
+    },
+    "Lighting technician and event setup technician at": {
+      "en": "Lighting technician and event setup technician at",
+      "es": "Técnico de iluminación y montador en"
+    },
+    "Wedding and event setup with": {
+      "en": "Wedding and event setup with",
+      "es": "Montaje de bodas y eventos con"
+    },
+    "Vocational Excellence Centre co-funded by the European Union badge": {
+      "en": "Vocational Excellence Centre co-funded by the European Union badge",
+      "es": "Insignia de Centro de Excelencia de FP cofinanciado por la Unión Europea"
+    }
+  });
+
+
+
+  Object.assign(TEXT_TRANSLATIONS, {
+    "· Higher Degree in Sound for Audiovisuals and Shows": {
+      "en": "· Higher Degree in Sound for Audiovisuals and Shows",
+      "es": "· Grado Superior en Sonido para Audiovisuales y Espectáculos"
+    },
+    "Degree in Audiovisual Communication at the University of Valencia": {
+      "en": "Degree in Audiovisual Communication at the University of Valencia",
+      "es": "Grado en Comunicación Audiovisual en la Universitat de València"
+    },
+    "Mix with the Masters courses": {
+      "en": "Mix with the Masters courses",
+      "es": "Cursos de Mix with the Masters"
+    },
+    "Jazz piano and modern harmony at CIM Benimaclet": {
+      "en": "Jazz piano and modern harmony at CIM Benimaclet",
+      "es": "Piano jazz y armonía moderna en CIM Benimaclet"
+    },
+    "IES La Marxadella · Center of Excellence in Vocational Training for the audiovisual sector · co-funded by the European Union": {
+      "en": "IES La Marxadella · Center of Excellence in Vocational Training for the audiovisual sector · co-funded by the European Union",
+      "es": "IES La Marxadella · Centro de Excelencia de FP del sector audiovisual · cofinanciado por la Unión Europea"
+    }
+  });
+
+
+
+  Object.assign(TEXT_TRANSLATIONS, {
+    "Although composing and producing soundtracks is my passion, I also like eating, so I have worked with these other companies.": {
+      "en": "Although composing and producing soundtracks is my passion, I also like eating, so I have worked with these other companies.",
+      "es": "Aunque componer y producir bandas sonoras es mi pasión, también me gusta comer, así que he trabajado con estas otras empresas."
+    },
+    "Software and tools": {
+      "en": "Software and tools",
+      "es": "Programas y herramientas"
+    },
+    "Main tools I use for composition, sound design, scoring, editing and audiovisual production.": {
+      "en": "Main tools I use for composition, sound design, scoring, editing and audiovisual production.",
+      "es": "Principales herramientas que uso para composición, diseño sonoro, scoring, edición y producción audiovisual."
+    },
+    "Sound design and live music, focused on creativity, fast idea development and loop-based workflows.": {
+      "en": "Sound design and live music, focused on creativity, fast idea development and loop-based workflows.",
+      "es": "Diseño sonoro y música en directo, enfocado a la creatividad, la velocidad de creación y el trabajo con loops."
+    },
+    "Industry-standard professional audio environment for recording, editing, post-production and session delivery.": {
+      "en": "Industry-standard professional audio environment for recording, editing, post-production and session delivery.",
+      "es": "Entorno de audio profesional estándar en la industria para grabación, edición, postproducción y entrega de sesiones."
+    },
+    "Film scoring and professional composition workflow for MIDI, orchestral mockups and cue development.": {
+      "en": "Film scoring and professional composition workflow for MIDI, orchestral mockups and cue development.",
+      "es": "Flujo de composición profesional para bandas sonoras, MIDI, maquetas orquestales y desarrollo de cues."
+    },
+    "Score creation, notation, arrangements and written musical material.": {
+      "en": "Score creation, notation, arrangements and written musical material.",
+      "es": "Creación de partituras, notación, arreglos y material musical escrito."
+    },
+    "Hybrid synthesis, cinematic textures, pads, atmospheres and sound design.": {
+      "en": "Hybrid synthesis, cinematic textures, pads, atmospheres and sound design.",
+      "es": "Síntesis híbrida, texturas cinematográficas, pads, atmósferas y diseño sonoro."
+    },
+    "Instrument, sampler and sound library ecosystem for production, scoring and custom sound palettes.": {
+      "en": "Instrument, sampler and sound library ecosystem for production, scoring and custom sound palettes.",
+      "es": "Ecosistema de instrumentos, sampler y librerías sonoras para producción, scoring y paletas de sonido personalizadas."
+    },
+    "Synthesizers, keyboards, vintage emulations and creative sound design tools.": {
+      "en": "Synthesizers, keyboards, vintage emulations and creative sound design tools.",
+      "es": "Sintetizadores, teclados, emulaciones vintage y herramientas creativas de diseño sonoro."
+    },
+    "Orchestral mockups and cinematic scoring with professional symphonic libraries.": {
+      "en": "Orchestral mockups and cinematic scoring with professional symphonic libraries.",
+      "es": "Maquetas orquestales y scoring cinematográfico con librerías sinfónicas profesionales."
+    },
+    "Classic Roland instruments, synthesizers and electronic sound palettes.": {
+      "en": "Classic Roland instruments, synthesizers and electronic sound palettes.",
+      "es": "Instrumentos clásicos de Roland, sintetizadores y paletas sonoras electrónicas."
+    },
+    "Mixing, mastering and production plugins for polishing and final delivery.": {
+      "en": "Mixing, mastering and production plugins for polishing and final delivery.",
+      "es": "Plugins de mezcla, mastering y producción para pulido y entrega final."
+    },
+    "Creative audio effects plugins with analog character, movement, colour and texture.": {
+      "en": "Creative audio effects plugins with analog character, movement, colour and texture.",
+      "es": "Plugins creativos de efectos de audio con carácter analógico, movimiento, color y textura."
+    },
+    "Reverb, delay and modulation plugins for space, depth and atmospheric sound design.": {
+      "en": "Reverb, delay and modulation plugins for space, depth and atmospheric sound design.",
+      "es": "Plugins de reverb, delay y modulación para espacio, profundidad y diseño sonoro atmosférico."
+    },
+    "Royalty-free samples, loops, one-shots and creative starting points.": {
+      "en": "Royalty-free samples, loops, one-shots and creative starting points.",
+      "es": "Samples, loops, one-shots y puntos de partida creativos libres de royalties."
+    },
+    "Advanced professional video editing knowledge focused on audiovisual projects.": {
+      "en": "Advanced professional video editing knowledge focused on audiovisual projects.",
+      "es": "Conocimientos avanzados de edición de vídeo profesional enfocados al audiovisual."
+    },
+    "Acoustic simulation and sound-system planning for live events, line arrays and venue coverage.": {
+      "en": "Acoustic simulation and sound-system planning for live events, line arrays and venue coverage.",
+      "es": "Simulación acústica y planificación de sistemas de sonido para directo, line arrays y cobertura de recintos."
+    },
+    "Ableton Live logo": { "en": "Ableton Live logo", "es": "Logo de Ableton Live" },
+    "Avid Pro Tools logo": { "en": "Avid Pro Tools logo", "es": "Logo de Avid Pro Tools" },
+    "Cubase logo": { "en": "Cubase logo", "es": "Logo de Cubase" },
+    "MuseScore logo": { "en": "MuseScore logo", "es": "Logo de MuseScore" },
+    "Omnisphere logo": { "en": "Omnisphere logo", "es": "Logo de Omnisphere" },
+    "Native Instruments logo": { "en": "Native Instruments logo", "es": "Logo de Native Instruments" },
+    "Arturia logo": { "en": "Arturia logo", "es": "Logo de Arturia" },
+    "Spitfire Symphony Orchestra logo": { "en": "Spitfire Symphony Orchestra logo", "es": "Logo de Spitfire Symphony Orchestra" },
+    "Roland logo": { "en": "Roland logo", "es": "Logo de Roland" },
+    "Waves Creative Access logo": { "en": "Waves Creative Access logo", "es": "Logo de Waves Creative Access" },
+    "Soundtoys logo": { "en": "Soundtoys logo", "es": "Logo de Soundtoys" },
+    "Valhalla DSP logo": { "en": "Valhalla DSP logo", "es": "Logo de Valhalla DSP" },
+    "Splice logo": { "en": "Splice logo", "es": "Logo de Splice" },
+    "Adobe Premiere Pro logo": { "en": "Adobe Premiere Pro logo", "es": "Logo de Adobe Premiere Pro" },
+    "EASE Focus logo": { "en": "EASE Focus logo", "es": "Logo de EASE Focus" }
+  });
+
+
+  Object.assign(TEXT_TRANSLATIONS, {
+    "Mixing, mastering and creative plugin ecosystem for production and final polish.": { "en": "Mixing, mastering and creative plugin ecosystem for production and final polish.", "es": "Ecosistema de plugins de mezcla, mastering y creatividad para producción y acabado final." },
+    "Audio repair, mixing, mastering and restoration tools for professional post-production and music finishing.": { "en": "Audio repair, mixing, mastering and restoration tools for professional post-production and music finishing.", "es": "Herramientas de reparación, mezcla, mastering y restauración de audio para postproducción profesional y acabado musical." },
+    "Flexible DAW for multitrack recording, editing, MIDI, mixing and efficient technical workflows.": { "en": "Flexible DAW for multitrack recording, editing, MIDI, mixing and efficient technical workflows.", "es": "DAW flexible para grabación multipista, edición, MIDI, mezcla y flujos técnicos eficientes." },
+    "Pattern-based music production, beat creation, sequencing and fast arrangement sketches.": { "en": "Pattern-based music production, beat creation, sequencing and fast arrangement sketches.", "es": "Producción musical basada en patrones, creación de beats, secuenciación y bocetos rápidos de arreglos." },
+    "Live visuals, VJ work, media-server workflows and audiovisual performance control.": { "en": "Live visuals, VJ work, media-server workflows and audiovisual performance control.", "es": "Visuales en directo, trabajo de VJ, flujos de media server y control de performance audiovisual." },
+    "Video recording, screen capture and live-streaming setup for audiovisual workflows.": { "en": "Video recording, screen capture and live-streaming setup for audiovisual workflows.", "es": "Grabación de vídeo, captura de pantalla y configuración de streaming para flujos audiovisuales." },
+    "EASE sound-system prediction and acoustic simulation for line arrays, loudspeaker coverage and live-event planning.": { "en": "EASE sound-system prediction and acoustic simulation for line arrays, loudspeaker coverage and live-event planning.", "es": "Predicción de sistemas de sonido EASE y simulación acústica para line arrays, cobertura de altavoces y planificación de directo." },
+    "Plugin Alliance logo": { "en": "Plugin Alliance logo", "es": "Logo de Plugin Alliance" },
+    "iZotope logo": { "en": "iZotope logo", "es": "Logo de iZotope" },
+    "REAPER logo": { "en": "REAPER logo", "es": "Logo de REAPER" },
+    "FL Studio logo": { "en": "FL Studio logo", "es": "Logo de FL Studio" },
+    "Resolume logo": { "en": "Resolume logo", "es": "Logo de Resolume" },
+    "OBS Studio logo": { "en": "OBS Studio logo", "es": "Logo de OBS Studio" }
+  });
+
+
+  Object.assign(TEXT_TRANSLATIONS, {
+    "IES La Marxadella · Co-funded by the European Union": {
+      "en": "IES La Marxadella · Co-funded by the European Union",
+      "es": "IES La Marxadella · Cofinanciado por la Unión Europea"
+    },
+    "European Union co-funded centre badge": {
+      "en": "European Union co-funded centre badge",
+      "es": "Insignia de centro cofinanciado por la Unión Europea"
+    },
+    "European Union flag": {
+      "en": "European Union flag",
+      "es": "Bandera de la Unión Europea"
+    }
+  });
+
   const PLACEHOLDER_TRANSLATIONS = {"Your name": {"en": "Your name", "es": "Tu nombre"}, "your@email.com": {"en": "your@email.com", "es": "tu@email.com"}, "you@email.com": {"en": "you@email.com", "es": "tu@email.com"}, "Game, film, single, EP...": {"en": "Game, film, single, EP...", "es": "Videojuego, película, single, EP..."}, "Tell me about your project": {"en": "Tell me about your project", "es": "Cuéntame sobre tu proyecto"}, "Tell me what you’re working on, what you need, and when you need it.": {"en": "Tell me what you’re working on, what you need, and when you need it.", "es": "Cuéntame en qué estás trabajando, qué necesitas y cuándo lo necesitas."}};
 
   const PAGE_TITLES = {"index": {"en": "Teo Torres | Composer & Producer", "es": "Teo Torres | Compositor y productor"}, "services": {"en": "Teo Torres | Services", "es": "Teo Torres | Servicios"}, "contact": {"en": "Teo Torres | Contact", "es": "Teo Torres | Contacto"}, "opinions": {"en": "Teo Torres | Opinions", "es": "Teo Torres | Opiniones"}, "projects": {"en": "Teo Torres | Projects", "es": "Teo Torres | Proyectos"}, "about": {"en": "Teo Torres | About", "es": "Teo Torres | Sobre mí"}};
@@ -1785,9 +3251,110 @@ body:not(.light-mode) .socials .twitter-icon {
   setLanguage(localStorage.getItem('siteLang') || 'en');
 })();
 </script>
+<script>
+(() => {
+  const grid = document.querySelector('.software-grid');
+  const toggle = document.getElementById('softwareToggle');
+  if (!grid || !toggle) return;
 
+  const cards = Array.from(grid.querySelectorAll('.software-card'));
+  if (cards.length <= 8) {
+    toggle.hidden = true;
+    return;
+  }
 
+  function currentLang() {
+    const stored = localStorage.getItem('siteLang');
+    const htmlLang = document.documentElement.lang;
+    return (stored || htmlLang || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
+  }
 
+  function updateToggleLabel() {
+    const lang = currentLang();
+    const expanded = grid.classList.contains('is-expanded');
+    toggle.textContent = expanded
+      ? (lang === 'es' ? toggle.dataset.hideEs : toggle.dataset.hideEn)
+      : (lang === 'es' ? toggle.dataset.showEs : toggle.dataset.showEn);
+    toggle.setAttribute('aria-expanded', String(expanded));
+  }
+
+  toggle.addEventListener('click', () => {
+    grid.classList.toggle('is-expanded');
+    updateToggleLabel();
+  });
+
+  new MutationObserver(updateToggleLabel).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['lang']
+  });
+
+  updateToggleLabel();
+})();
+</script>
+<script>
+(() => {
+  const carousel = document.querySelector('[data-about-carousel]');
+  if (!carousel) return;
+
+  const slides = Array.from(carousel.querySelectorAll('.about-slide'));
+  const dots = Array.from(carousel.querySelectorAll('.about-dot')); // No visible dots in current layout.
+  const prev = carousel.querySelector('[data-about-prev]'); // Controls are optional; autoplay works without them.
+  const next = carousel.querySelector('[data-about-next]');
+  const AUTOPLAY_MS = 3400;
+  let index = 0;
+  let timer = null;
+
+  function showSlide(nextIndex) {
+    if (!slides.length) return;
+    index = (nextIndex + slides.length) % slides.length;
+    slides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === index);
+      slide.setAttribute('aria-hidden', String(slideIndex !== index));
+    });
+    dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+  }
+
+  function stopAutoPlay() {
+    if (timer) window.clearTimeout(timer);
+    timer = null;
+  }
+
+  function startAutoPlay() {
+    if (slides.length < 2) return;
+    stopAutoPlay();
+    timer = window.setTimeout(() => {
+      showSlide(index + 1);
+      startAutoPlay();
+    }, AUTOPLAY_MS);
+  }
+
+  function manualMove(nextIndex) {
+    showSlide(nextIndex);
+    startAutoPlay();
+  }
+
+  prev?.addEventListener('click', () => manualMove(index - 1));
+  next?.addEventListener('click', () => manualMove(index + 1));
+  dots.forEach((dot, dotIndex) => {
+    dot.addEventListener('click', () => manualMove(dotIndex));
+  });
+
+  // Mobile fix: do not disable autoplay when the phone reports prefers-reduced-motion.
+  // That setting now only removes the fade animation in CSS; the images still advance.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoPlay();
+    else startAutoPlay();
+  });
+
+  window.addEventListener('pageshow', () => {
+    showSlide(index);
+    startAutoPlay();
+  });
+
+  showSlide(0);
+  startAutoPlay();
+})();
+</script>
 <script>
 (() => {
   const themeToggle = document.getElementById('themeToggle');
@@ -1816,6 +3383,5 @@ body:not(.light-mode) .socials .twitter-icon {
   });
 })();
 </script>
-
 </body>
 </html>
