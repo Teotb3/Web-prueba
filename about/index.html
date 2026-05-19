@@ -1932,9 +1932,6 @@ body.light-mode .about-dot.is-active {
 <img class="about-slide" src="../about-slide-4.jpg" alt="Teo Torres portrait outdoors" loading="lazy" decoding="async"/>
 <img class="about-slide" src="../about-slide-5.jpg" alt="Teo Torres performing at piano" loading="lazy" decoding="async"/>
     </div>
-    <button class="about-carousel-btn about-carousel-prev" type="button" data-about-prev aria-label="Previous image">‹</button>
-    <button class="about-carousel-btn about-carousel-next" type="button" data-about-next aria-label="Next image">›</button>
-    <div class="about-carousel-dots" aria-hidden="true"><button class="about-dot is-active" type="button" data-about-dot="0" aria-label="Go to image 1"></button><button class="about-dot" type="button" data-about-dot="1" aria-label="Go to image 2"></button><button class="about-dot" type="button" data-about-dot="2" aria-label="Go to image 3"></button><button class="about-dot" type="button" data-about-dot="3" aria-label="Go to image 4"></button><button class="about-dot" type="button" data-about-dot="4" aria-label="Go to image 5"></button></div>
   </div>
 </aside>
 <section class="about-copy">
@@ -3300,38 +3297,60 @@ body.light-mode .about-dot.is-active {
   if (!carousel) return;
 
   const slides = Array.from(carousel.querySelectorAll('.about-slide'));
-  const dots = Array.from(carousel.querySelectorAll('.about-dot'));
-  const prev = carousel.querySelector('[data-about-prev]');
+  const dots = Array.from(carousel.querySelectorAll('.about-dot')); // No visible dots in current layout.
+  const prev = carousel.querySelector('[data-about-prev]'); // Controls are optional; autoplay works without them.
   const next = carousel.querySelector('[data-about-next]');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const AUTOPLAY_MS = 3400;
   let index = 0;
   let timer = null;
 
   function showSlide(nextIndex) {
     if (!slides.length) return;
     index = (nextIndex + slides.length) % slides.length;
-    slides.forEach((slide, slideIndex) => slide.classList.toggle('is-active', slideIndex === index));
+    slides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === index);
+      slide.setAttribute('aria-hidden', String(slideIndex !== index));
+    });
     dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
   }
 
   function stopAutoPlay() {
-    if (timer) window.clearInterval(timer);
+    if (timer) window.clearTimeout(timer);
     timer = null;
   }
 
   function startAutoPlay() {
-    if (reducedMotion || slides.length < 2) return;
+    if (slides.length < 2) return;
     stopAutoPlay();
-    timer = window.setInterval(() => showSlide(index + 1), 4600);
+    timer = window.setTimeout(() => {
+      showSlide(index + 1);
+      startAutoPlay();
+    }, AUTOPLAY_MS);
   }
 
-  prev?.addEventListener('click', () => { showSlide(index - 1); startAutoPlay(); });
-  next?.addEventListener('click', () => { showSlide(index + 1); startAutoPlay(); });
+  function manualMove(nextIndex) {
+    showSlide(nextIndex);
+    startAutoPlay();
+  }
+
+  prev?.addEventListener('click', () => manualMove(index - 1));
+  next?.addEventListener('click', () => manualMove(index + 1));
   dots.forEach((dot, dotIndex) => {
-    dot.addEventListener('click', () => { showSlide(dotIndex); startAutoPlay(); });
+    dot.addEventListener('click', () => manualMove(dotIndex));
   });
 
-  // Autoplay stays active. Manual controls reset the interval, but hovering does not stop the carousel.
+  // Mobile fix: do not disable autoplay when the phone reports prefers-reduced-motion.
+  // That setting now only removes the fade animation in CSS; the images still advance.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoPlay();
+    else startAutoPlay();
+  });
+
+  window.addEventListener('pageshow', () => {
+    showSlide(index);
+    startAutoPlay();
+  });
+
   showSlide(0);
   startAutoPlay();
 })();
@@ -3366,4 +3385,3 @@ body.light-mode .about-dot.is-active {
 </script>
 </body>
 </html>
-
